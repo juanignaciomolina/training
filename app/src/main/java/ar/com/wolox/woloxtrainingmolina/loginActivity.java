@@ -9,18 +9,22 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class loginActivity extends Activity implements View.OnClickListener{
 
+    private Context mContext;
+    private SharedPreferences mPreferences;
+
     private EditText mMail;
     private EditText mPassword;
     private Button mLogIn;
     private Button mSignUp;
-    private Context mContext;
-    private SharedPreferences mPreferences;
+    private TextView mToS;
 
+    private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
     private static final String PASSWORD_KEY = "Password";
 
@@ -31,15 +35,17 @@ public class loginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
         mContext = getApplicationContext();
-        mPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
 
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
         mLogIn = (Button) findViewById(R.id.btn_login);
         mSignUp = (Button) findViewById(R.id.btn_signup);
+        mToS = (TextView) findViewById(R.id.tv_tos);
 
         mLogIn.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
+        mToS.setOnClickListener(this);
 
         //Si existen, se traen los valores guardados previamente para la dirección de email y el password
         String prefEmail = mPreferences.getString(EMAIL_KEY, null);
@@ -68,7 +74,7 @@ public class loginActivity extends Activity implements View.OnClickListener{
 
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putString(EMAIL_KEY, mMail.getText().toString());
-                    editor.putString(PASSWORD_KEY ,mPassword.getText().toString());
+                    editor.putString(PASSWORD_KEY, mPassword.getText().toString());
                     editor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
                 break;
@@ -77,6 +83,9 @@ public class loginActivity extends Activity implements View.OnClickListener{
 
                 break;
 
+            case R.id.tv_tos: // Terms of Service textView
+
+                break;
         }
     }
 
