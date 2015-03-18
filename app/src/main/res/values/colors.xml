@@ -20,4 +20,8 @@
     <item name="wolox_rojo" type="color">#FFEE4136</item>
     <item name="wolox_gris" type="color">#FFE6E6E4</item>
 
+    <item name="btn_azul" type="color">#FF33B5E5</item>
+    <item name="btn_regular" type="color">#FFFFFFFF</item>
+    <item name="btn_borde_gris" type="color">#FFE6E6E4</item>
+
 </resources>
