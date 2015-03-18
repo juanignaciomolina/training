@@ -2,7 +2,9 @@ package ar.com.wolox.woloxtrainingmolina;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -84,7 +86,7 @@ public class loginActivity extends Activity implements View.OnClickListener{
                 break;
 
             case R.id.tv_tos: // Terms of Service textView
-
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
                 break;
         }
     }
