@@ -2,6 +2,7 @@ package ar.com.wolox.woloxtrainingmolina;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +19,10 @@ public class loginActivity extends Activity implements View.OnClickListener{
     private Button mLogIn;
     private Button mSignUp;
     private Context mContext;
+    private SharedPreferences mPreferences;
+
+    private static final String EMAIL_KEY = "Email";
+    private static final String PASSWORD_KEY = "Password";
 
 
     @Override
@@ -26,6 +31,7 @@ public class loginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
         mContext = getApplicationContext();
+        mPreferences = this.getPreferences(Context.MODE_PRIVATE);
 
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
@@ -34,6 +40,13 @@ public class loginActivity extends Activity implements View.OnClickListener{
 
         mLogIn.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
+
+        //Si existen, se traen los valores guardados previamente para la dirección de email y el password
+        String prefEmail = mPreferences.getString(EMAIL_KEY, null);
+        String prefPassword = mPreferences.getString(PASSWORD_KEY, null);
+
+        if (prefEmail != null) mMail.setText(prefEmail);
+        if (prefPassword != null) mPassword.setText(prefPassword);
 
     }
 
@@ -52,6 +65,11 @@ public class loginActivity extends Activity implements View.OnClickListener{
                         mMail.setError(getString(R.string.login_not_valid_email));
                         return;
                     }
+
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putString(EMAIL_KEY, mMail.getText().toString());
+                    editor.putString(PASSWORD_KEY ,mPassword.getText().toString());
+                    editor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
                 break;
 
