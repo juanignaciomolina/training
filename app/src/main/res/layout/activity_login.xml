@@ -1,7 +1,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/blanco"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -85,14 +85,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/login_btn_login"
-                android:id="@+id/btn_login" />
+                android:id="@+id/btn_login"
+                android:background="@drawable/btn_regular"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/login_btn_signup"
-                android:id="@+id/btn_signup" />
+                android:id="@+id/btn_signup"
+                android:background="@drawable/btn_azul"
+                android:textColor="@color/blanco"/>
         </LinearLayout>
 
     </RelativeLayout>
