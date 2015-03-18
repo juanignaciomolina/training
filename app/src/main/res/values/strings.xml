@@ -10,4 +10,5 @@
     <string name="login_btn_login">log in</string>
     <string name="login_btn_signup">sign up</string>
     <string name="login_require_all">Every field is required</string>
+    <string name="login_not_valid_email">Not a valid email adress</string>
 </resources>
