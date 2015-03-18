@@ -27,6 +27,53 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/login_tos"
             android:id="@+id/textView2"
-            android:layout_marginLeft="8dp" />
+            android:layout_marginLeft="4dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/loginlogo"
+            android:scaleType="fitCenter" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/et_email"
+            android:hint="@string/login_email"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/et_password"
+            android:hint="@string/login_password"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/login_btn_login"
+            android:id="@+id/button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/login_btn_signup"
+            android:id="@+id/button2" />
     </LinearLayout>
 </RelativeLayout>
