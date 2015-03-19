@@ -11,4 +11,5 @@
     <string name="login_btn_signup">sign up</string>
     <string name="login_require_all">Every field is required</string>
     <string name="login_not_valid_email">Not a valid email adress</string>
+    <string name="login_wrong_credentials">Sorry... Please check your email and password and try again :)</string>
 </resources>

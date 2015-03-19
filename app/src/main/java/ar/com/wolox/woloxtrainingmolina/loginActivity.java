@@ -25,6 +25,7 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
 
     private Context mContext;
     private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
 
     private EditText mMail;
     private EditText mPassword;
@@ -40,6 +41,7 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
     private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
     private static final String PASSWORD_KEY = "Password";
+    private static final String SESSION_KEY = "Session";
 
 
     @Override
@@ -63,6 +65,7 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
         //Si existen, se traen los valores guardados previamente para la dirección de email y el password
         String prefEmail = mPreferences.getString(EMAIL_KEY, null);
         String prefPassword = mPreferences.getString(PASSWORD_KEY, null);
+        mPreferencesEditor = mPreferences.edit(); //Tremos un editor para las preferences
 
         if (prefEmail != null) mMail.setText(prefEmail);
         if (prefPassword != null) mPassword.setText(prefPassword);
@@ -89,10 +92,9 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
                         return;
                     }
 
-                    SharedPreferences.Editor editor = mPreferences.edit();
-                    editor.putString(EMAIL_KEY, mMail.getText().toString());
-                    editor.putString(PASSWORD_KEY, mPassword.getText().toString());
-                    editor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
+                    mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
+                    mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
+                    mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
                     doLogIn(mMail.getText().toString(), mPassword.getText().toString());
 
@@ -121,15 +123,17 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request enviado");
     }
 
+    //RETROFIT CALLBACKS
     @Override
     public void success(HTTPResponse httpResponse, Response response) {
-        Log.d(Config.LOG_DEBUG, response.toString());
-        muestraToast(response.toString());
+        if (response.getStatus() == 200) {
+            muestraToast("Welcome!");
+        }
     }
 
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.toString());
-        muestraToast(error.getMessage());
+        muestraToast(getString(R.string.login_wrong_credentials));
     }
 }

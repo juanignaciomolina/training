@@ -18,6 +18,7 @@ public class ParseAPIHelper {
         return new RestAdapter.Builder()
                 .setEndpoint(Config.PARSE_API_URL)
                 .setRequestInterceptor(requestInterceptor)
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .build();
     }
 
