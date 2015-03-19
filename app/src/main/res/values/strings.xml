@@ -16,4 +16,6 @@
     <string name="progressdialog_connecting">Connecting...</string>
     <string name="login_welcome">Welcome!</string>
     <string name="title_activity_sign_up">Sign up</string>
+    <string name="signup_confirm_password">Confirm password</string>
+    <string name="signup_join">Join</string>
 </resources>
