@@ -143,6 +143,7 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
         if (response.getStatus() == 200) {
             this.mUsuario = usuario;
             mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
+            mPreferencesEditor.apply();
             muestraToast(getString(R.string.login_welcome));
         }
     }
