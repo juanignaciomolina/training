@@ -15,4 +15,7 @@ public class Config {
     public static final String PARSE_LOGIN = "/login";
     public static final String PARSE_USERS = "/users";
 
+    public static final String LOG_DEBUG = "Wolox - Debug:";
+    public static final String LOG_ERROR = "Wolox - Error: ";
+
 }
