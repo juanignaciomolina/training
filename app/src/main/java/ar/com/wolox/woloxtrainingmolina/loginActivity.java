@@ -95,7 +95,7 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
             case R.id.btn_login: // LogIn button
 
                     //Regla: Todos los campos son requeridos
-                    if (mMail.getText().toString().equals("") && mPassword.getText().toString().equals("")) {
+                    if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
                         muestraToast(getString(R.string.login_require_all));
                         return;
                     }
@@ -144,7 +144,7 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
         if (response.getStatus() == 200) {
             this.mUsuario = usuario;
             mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
-            muestraToast("Welcome!");
+            muestraToast(getString(R.string.login_welcome));
         }
     }
 
@@ -162,7 +162,7 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
         public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
             ProgressDialog dialog = new ProgressDialog(getActivity());
-            dialog.setMessage("Connecting..."); // set your messages if not inflated from XML
+            dialog.setMessage(getActivity().getString(R.string.progressdialog_connecting)); // set your messages if not inflated from XML
 
             dialog.setCancelable(false);
 
