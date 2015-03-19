@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.entities.Usuario;
 import ar.com.wolox.woloxtrainingmolina.ui.ConectandoDialog;
+import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -95,14 +96,15 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
 
             case R.id.btn_login: // LogIn button
 
+                    //Regla: La dirección de email debe ser válida
+                    if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
+                        mMail.setError(getString(R.string.login_not_valid_email));
+                        return;
+                    }
+
                     //Regla: Todos los campos son requeridos
                     if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
                         muestraToast(getString(R.string.login_require_all));
-                        return;
-                    }
-                    //Regla: La dirección de email debe ser válida
-                    if (!validaEmail(mMail.getText().toString())) {
-                        mMail.setError(getString(R.string.login_not_valid_email));
                         return;
                     }
 
@@ -126,10 +128,6 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
 
     private void muestraToast (String mensaje) {
         Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT).show();
-    }
-
-    private static boolean validaEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void doLogIn(String email, String password) {

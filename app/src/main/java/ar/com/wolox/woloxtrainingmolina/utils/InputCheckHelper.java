@@ -1,0 +1,10 @@
+package ar.com.wolox.woloxtrainingmolina.utils;
+
+import android.text.TextUtils;
+
+public class InputCheckHelper {
+
+    public static boolean validaEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+}
