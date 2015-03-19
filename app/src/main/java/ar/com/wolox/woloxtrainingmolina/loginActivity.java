@@ -14,8 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class loginActivity extends Activity implements View.OnClickListener{
+
+public class loginActivity extends Activity implements View.OnClickListener, Callback<HTTPResponse> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -25,6 +30,11 @@ public class loginActivity extends Activity implements View.OnClickListener{
     private Button mLogIn;
     private Button mSignUp;
     private TextView mToS;
+
+    private ParseAPIHelper mAPIHelper;
+    private LogInService mLogInService;
+    private RestAdapter mRestAdapter;
+    private Response mHTTPResponse;
 
     private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
@@ -56,6 +66,10 @@ public class loginActivity extends Activity implements View.OnClickListener{
         if (prefEmail != null) mMail.setText(prefEmail);
         if (prefPassword != null) mPassword.setText(prefPassword);
 
+        //Preparamos una conexión a la API de Parse
+        mAPIHelper = new ParseAPIHelper();
+        mRestAdapter = mAPIHelper.getRestAdapter();
+        mLogInService = mRestAdapter.create(LogInService.class);
     }
 
     public void onClick(View v) {
@@ -79,6 +93,8 @@ public class loginActivity extends Activity implements View.OnClickListener{
                     editor.putString(PASSWORD_KEY, mPassword.getText().toString());
                     editor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
+                    doLogIn(mMail.getText().toString(), mPassword.getText().toString());
+
                 break;
 
             case R.id.btn_signup: // SignUp button
@@ -99,4 +115,18 @@ public class loginActivity extends Activity implements View.OnClickListener{
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    private void doLogIn(String email, String password) {
+        mLogInService.logIn(email, password, this);
+    }
+
+    @Override
+    public void success(HTTPResponse httpResponse, Response response) {
+        muestraToast(response.toString());
+
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        muestraToast(error.toString());
+    }
 }

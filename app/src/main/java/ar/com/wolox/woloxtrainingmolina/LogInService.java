@@ -1,12 +1,13 @@
 package ar.com.wolox.woloxtrainingmolina;
 
-import ar.com.wolox.woloxtrainingmolina.annotations.GET;
+import javax.security.auth.callback.Callback;
+
 import ar.com.wolox.woloxtrainingmolina.entitites.Usuario;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
+import retrofit.client.Response;
+import retrofit.http.GET;
+import retrofit.http.Query;
 
 public interface LogInService {
-    @FormUrlEncoded
     @GET(Config.PARSE_LOGIN)
-    Usuario logIn(@Field("username") String username, @Field("password") String password);
+    void logIn(@Query("username") String email, @Query("password") String password, retrofit.Callback<HTTPResponse> httpResponseCallback); //En esta app el username es el mail
 }

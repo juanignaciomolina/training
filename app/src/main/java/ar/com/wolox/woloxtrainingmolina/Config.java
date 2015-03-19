@@ -12,7 +12,7 @@ public class Config {
     public static final String PARSE_REST_KEY = "c2Vi5MRQx5WxhppghBZy4KYIGjQ6U0CeLAY6UHXO";
 
     public static final String PARSE_API_URL = "https://api.parse.com/1";
-    public static final String PARSE_LOGIN = PARSE_API_URL + "/login";
-    public static final String PARSE_USERS = PARSE_API_URL + "/users";
+    public static final String PARSE_LOGIN = "/login";
+    public static final String PARSE_USERS = "/users";
 
 }
