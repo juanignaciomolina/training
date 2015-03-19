@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,13 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ar.com.wolox.woloxtrainingmolina.entities.Usuario;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class loginActivity extends Activity implements View.OnClickListener, Callback<HTTPResponse> {
+public class loginActivity extends Activity implements View.OnClickListener, Callback<Usuario> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -37,6 +37,8 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
     private LogInService mLogInService;
     private RestAdapter mRestAdapter;
     private Response mHTTPResponse;
+
+    private Usuario mUsuario;
 
     private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
@@ -125,8 +127,12 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
 
     //RETROFIT CALLBACKS
     @Override
-    public void success(HTTPResponse httpResponse, Response response) {
+    public void success(Usuario usuario, Response response) {
         if (response.getStatus() == 200) {
+            this.mUsuario = usuario;
+
+            mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
+
             muestraToast("Welcome!");
         }
     }
