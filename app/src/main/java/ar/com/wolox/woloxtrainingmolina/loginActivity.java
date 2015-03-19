@@ -133,7 +133,8 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
 
     @Override
     public void failure(RetrofitError error) {
-        Log.e(Config.LOG_ERROR, error.toString());
-        muestraToast(getString(R.string.login_wrong_credentials));
+        Log.e(Config.LOG_ERROR, error.getMessage());
+        if (error.getMessage().contains("404")) muestraToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
+        else muestraToast(getString(R.string.login_unable_to_connect));
     }
 }
