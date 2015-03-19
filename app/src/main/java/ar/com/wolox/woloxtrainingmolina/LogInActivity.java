@@ -91,32 +91,32 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
 
             case R.id.btn_login: // LogIn button
 
-                    //Regla: La dirección de email debe ser válida
-                    if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
-                        mMail.setError(getString(R.string.login_not_valid_email));
-                        return;
-                    }
+                //Regla: La dirección de email debe ser válida
+                if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
+                    mMail.setError(getString(R.string.login_not_valid_email));
+                    return;
+                }
 
-                    //Regla: Todos los campos son requeridos
-                    if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
-                        muestraToast(getString(R.string.login_require_all));
-                        return;
-                    }
+                //Regla: Todos los campos son requeridos
+                if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
+                    muestraToast(getString(R.string.login_require_all));
+                    return;
+                }
 
-                    mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
-                    mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
-                    mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
+                mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
+                mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
+                mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
-                    doLogIn(mMail.getText().toString(), mPassword.getText().toString());
+                doLogIn(mMail.getText().toString(), mPassword.getText().toString());
 
                 break;
 
             case R.id.btn_signup: // SignUp button
-
+                startActivity(new Intent(this, SignUpActivity.class));
                 break;
 
             case R.id.tv_tos: // Terms of Service textView
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
                 break;
         }
     }
