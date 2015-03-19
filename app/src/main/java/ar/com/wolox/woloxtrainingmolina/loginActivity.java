@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.entities.Usuario;
+import ar.com.wolox.woloxtrainingmolina.ui.ConectandoDialog;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -156,17 +157,4 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
         else muestraToast(getString(R.string.login_unable_to_connect));
     }
 
-    public static class ConectandoDialog extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(final Bundle savedInstanceState) {
-
-            ProgressDialog dialog = new ProgressDialog(getActivity());
-            dialog.setMessage(getActivity().getString(R.string.progressdialog_connecting)); // set your messages if not inflated from XML
-
-            dialog.setCancelable(false);
-
-            return dialog;
-        }
-    }
 }
