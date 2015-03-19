@@ -1,11 +1,12 @@
 package ar.com.wolox.woloxtrainingmolina;
 
-
 import ar.com.wolox.woloxtrainingmolina.annotations.GET;
-import ar.com.wolox.woloxtrainingmolina.annotations.Path;
 import ar.com.wolox.woloxtrainingmolina.entitites.Usuario;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 
 public interface LogInService {
-    @GET("/login/{user}/repos")
-    Usuario getUser(@Path("user") String user);
+    @FormUrlEncoded
+    @GET(Config.PARSE_LOGIN)
+    Usuario logIn(@Field("username") String username, @Field("password") String password);
 }

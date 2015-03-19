@@ -19,7 +19,6 @@ public class ParseAPIHelper {
                 .setEndpoint(Config.PARSE_API_URL)
                 .setRequestInterceptor(requestInterceptor)
                 .build();
-
     }
 
 }
