@@ -2,4 +2,20 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Dimensiones acordes a los colores utilizados en las guidelines-->
+    <dimen name="guideline_rojo">8dp</dimen>
+    <dimen name="guideline_verde">24dp</dimen>
+    <dimen name="guideline_amarillo">48dp</dimen>
+    <dimen name="guideline_violeta">56dp</dimen>
+    <dimen name="guideline_verde_oscuro">88dp</dimen>
+
+    <!-- Dimensiones acordes a las fuentes utilizadas en las guidelines-->
+    <dimen name="guideline_roboto_medium">155.56sp</dimen>
+    <dimen name="guideline_roboto_regular_1">104.44sp</dimen>
+    <dimen name="guideline_roboto_regular_2">97.78sp</dimen>
+    <dimen name="guideline_roboto_regular_3">91.11sp</dimen>
+    <dimen name="guideline_roboto_regular_4">77.78sp</dimen>
+    <dimen name="guideline_roboto_regular_5">68.89sp</dimen>
+
 </resources>

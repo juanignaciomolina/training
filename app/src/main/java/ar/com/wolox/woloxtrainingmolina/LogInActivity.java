@@ -1,17 +1,12 @@
 package ar.com.wolox.woloxtrainingmolina;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +23,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class loginActivity extends FragmentActivity implements View.OnClickListener, Callback<Usuario> {
+public class LogInActivity extends FragmentActivity implements View.OnClickListener, Callback<Usuario> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -59,7 +54,7 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_log_in);
 
         mContext = getApplicationContext();
         mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);

@@ -15,4 +15,5 @@
     <string name="login_unable_to_connect">Unable to connect to the server, try again later</string>
     <string name="progressdialog_connecting">Connecting...</string>
     <string name="login_welcome">Welcome!</string>
+    <string name="title_activity_sign_up">Sign up</string>
 </resources>
