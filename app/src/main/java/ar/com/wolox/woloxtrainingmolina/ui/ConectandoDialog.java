@@ -13,9 +13,9 @@ public class ConectandoDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setMessage(getActivity().getString(R.string.progressdialog_connecting)); // set your messages if not inflated from XML
-
+        dialog.setMessage(getActivity().getString(R.string.progressdialog_connecting));
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
 
         return dialog;
     }

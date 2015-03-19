@@ -133,13 +133,13 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
     private void doLogIn(String email, String password) {
         mLogInService.logIn(email, password, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request enviado");
-        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        bloqueaUI();
     }
 
     //RETROFIT CALLBACKS
     @Override
     public void success(Usuario usuario, Response response) {
-        mConectandoDialogInstance.dismiss();
+        desbloqueaUI();
         if (response.getStatus() == 200) {
             this.mUsuario = usuario;
             mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
@@ -150,9 +150,21 @@ public class loginActivity extends FragmentActivity implements View.OnClickListe
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
-        mConectandoDialogInstance.dismiss();
+        desbloqueaUI();
         if (error.getMessage().contains("404")) muestraToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
         else muestraToast(getString(R.string.login_unable_to_connect));
+    }
+
+    private void bloqueaUI () {
+        mLogIn.setEnabled(false);
+        mSignUp.setEnabled(false);
+        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+    }
+
+    private void desbloqueaUI () {
+        mLogIn.setEnabled(true);
+        mSignUp.setEnabled(true);
+        mConectandoDialogInstance.dismiss();
     }
 
 }
