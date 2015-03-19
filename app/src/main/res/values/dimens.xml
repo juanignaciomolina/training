@@ -10,6 +10,8 @@
     <dimen name="guideline_violeta">56dp</dimen>
     <dimen name="guideline_verde_oscuro">88dp</dimen>
 
+    <dimen name="guideline_boton">40dp</dimen>
+
     <!-- Dimensiones acordes a las fuentes utilizadas en las guidelines-->
     <dimen name="guideline_roboto_medium">155.56sp</dimen>
     <dimen name="guideline_roboto_regular_1">104.44sp</dimen>
