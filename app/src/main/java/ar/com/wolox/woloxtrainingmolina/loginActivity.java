@@ -1,11 +1,16 @@
 package ar.com.wolox.woloxtrainingmolina;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +26,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class loginActivity extends Activity implements View.OnClickListener, Callback<Usuario> {
+public class loginActivity extends FragmentActivity implements View.OnClickListener, Callback<Usuario> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -40,6 +45,9 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
 
     private Usuario mUsuario;
 
+    private FragmentManager mFragmentManager;
+    private ConectandoDialog mConectandoDialogInstance;
+
     private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
     private static final String PASSWORD_KEY = "Password";
@@ -53,6 +61,9 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
 
         mContext = getApplicationContext();
         mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
+
+        mFragmentManager = getSupportFragmentManager();
+        mConectandoDialogInstance= new ConectandoDialog();
 
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
@@ -123,16 +134,16 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
     private void doLogIn(String email, String password) {
         mLogInService.logIn(email, password, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request enviado");
+        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
 
     //RETROFIT CALLBACKS
     @Override
     public void success(Usuario usuario, Response response) {
+        mConectandoDialogInstance.dismiss();
         if (response.getStatus() == 200) {
             this.mUsuario = usuario;
-
             mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
-
             muestraToast("Welcome!");
         }
     }
@@ -140,7 +151,22 @@ public class loginActivity extends Activity implements View.OnClickListener, Cal
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
+        mConectandoDialogInstance.dismiss();
         if (error.getMessage().contains("404")) muestraToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
         else muestraToast(getString(R.string.login_unable_to_connect));
+    }
+
+    public static class ConectandoDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(final Bundle savedInstanceState) {
+
+            ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Connecting..."); // set your messages if not inflated from XML
+
+            dialog.setCancelable(false);
+
+            return dialog;
+        }
     }
 }
