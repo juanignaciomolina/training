@@ -13,7 +13,9 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_violeta"
+        android:layout_height="@dimen/guideline_editText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/et_email"
@@ -21,7 +23,9 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_violeta"
+        android:layout_height="@dimen/guideline_editText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/et_password"
@@ -29,7 +33,9 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_violeta"
+        android:layout_height="@dimen/guideline_editText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/et_password_confirm"
