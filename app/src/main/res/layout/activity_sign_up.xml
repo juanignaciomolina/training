@@ -12,33 +12,21 @@
     android:theme="@style/Theme.AppCompat.Light">
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_editText"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:inputType="textEmailAddress"
-        android:ems="10"
         android:id="@+id/et_email"
+        style="@style/editText.regular"
+        android:inputType="textEmailAddress"
         android:hint="@string/login_email"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_editText"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/et_password"
+        style="@style/editText.regular"
+        android:inputType="textPassword"
         android:hint="@string/login_password"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_editText"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/et_password_confirm"
+        style="@style/editText.regular"
+        android:inputType="textPassword"
         android:hint="@string/signup_confirm_password"/>
 
     <include
@@ -47,13 +35,8 @@
         android:layout_width="match_parent"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/guideline_boton"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/signup_join"
         android:id="@+id/btn_join"
-        android:background="@drawable/btn_blue"
-        android:textColor="@color/white"/>
+        style="@style/button.blue"
+        android:text="@string/signup_join"/>
 
 </LinearLayout>
