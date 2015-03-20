@@ -48,11 +48,6 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     private FragmentManager mFragmentManager;
     private ConnectingDialog mConnectingDialogInstance;
 
-    private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
-    private static final String EMAIL_KEY = "Email";
-    private static final String PASSWORD_KEY = "Password";
-    private static final String SESSION_KEY = "Session";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +65,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     }
 
     private void initPreferences() {
-        mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
         mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
     }
 
@@ -90,8 +85,8 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private void initUI() {
         //Si existen, se traen los valores guardados previamente para la dirección de email y el password
-        String prefEmail = mPreferences.getString(EMAIL_KEY, null);
-        String prefPassword = mPreferences.getString(PASSWORD_KEY, null);
+        String prefEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
+        String prefPassword = mPreferences.getString(Config.LOGIN_PASSWORD_KEY, null);
         if (prefEmail != null) mMail.setText(prefEmail);
         if (prefPassword != null) mPassword.setText(prefPassword);
     }
@@ -143,8 +138,8 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
                 return;
             }
 
-            mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
-            mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mMail.getText().toString());
+            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mPassword.getText().toString());
             mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
             doLogIn(mMail.getText().toString(), mPassword.getText().toString());
@@ -181,7 +176,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         unlockUI();
         if (response.getStatus() == 200) {
             this.mUser = user;
-            mPreferencesEditor.putString(SESSION_KEY, this.mUser.sessionToken);
+            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
             mPreferencesEditor.apply();
             showToast(getString(R.string.login_welcome));
         }

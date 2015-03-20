@@ -15,6 +15,13 @@ public class Config {
     public static final String PARSE_LOGIN = "/login";
     public static final String PARSE_USERS = "/users";
 
+    //SharedPreferences
+    public static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
+    public static final String LOGIN_EMAIL_KEY = "Email";
+    public static final String LOGIN_PASSWORD_KEY = "Password";
+    public static final String LOGIN_SESSION_KEY = "Session";
+
+    //Logs
     public static final String LOG_DEBUG = "Wolox - Debug:";
     public static final String LOG_ERROR = "Wolox - Error: ";
 
