@@ -1,5 +1,6 @@
-package ar.com.wolox.woloxtrainingmolina;
+package ar.com.wolox.woloxtrainingmolina.api;
 
+import ar.com.wolox.woloxtrainingmolina.Config;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 

@@ -7,7 +7,7 @@ import android.support.v4.app.DialogFragment;
 
 import ar.com.wolox.woloxtrainingmolina.R;
 
-public class ConectandoDialog extends DialogFragment {
+public class ConnectingDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {

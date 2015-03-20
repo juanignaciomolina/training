@@ -1,4 +1,4 @@
-package ar.com.wolox.woloxtrainingmolina;
+package ar.com.wolox.woloxtrainingmolina.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ar.com.wolox.woloxtrainingmolina.entities.Usuario;
-import ar.com.wolox.woloxtrainingmolina.ui.ConectandoDialog;
+import ar.com.wolox.woloxtrainingmolina.Config;
+import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.api.LogInService;
+import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
+import ar.com.wolox.woloxtrainingmolina.entities.User;
+import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -23,7 +27,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class LogInActivity extends FragmentActivity implements Callback<Usuario> {
+public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -38,12 +42,11 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
     private ParseAPIHelper mAPIHelper;
     private LogInService mLogInService;
     private RestAdapter mRestAdapter;
-    private Response mHTTPResponse;
 
-    private Usuario mUsuario;
+    private User mUser;
 
     private FragmentManager mFragmentManager;
-    private ConectandoDialog mConectandoDialogInstance;
+    private ConnectingDialog mConnectingDialogInstance;
 
     private static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
     private static final String EMAIL_KEY = "Email";
@@ -62,13 +65,13 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
         setUI(); //findViewsById
         setListeners(); //Bindear listeners a los botones
         initUI(); //Cargar valores default de la UI
-        prepareAPIConnection();
+        initAPIConnection();
         initFragments(); //Preparar fragmentManager y fragments
     }
 
     private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        mPreferencesEditor = mPreferences.edit(); //Tremos un editor para las preferences
+        mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
     }
 
     private void setUI() {
@@ -93,7 +96,7 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
         if (prefPassword != null) mPassword.setText(prefPassword);
     }
 
-    private void prepareAPIConnection () {
+    private void initAPIConnection() {
         //Preparamos una conexión a la API de Parse
         mAPIHelper = new ParseAPIHelper();
         mRestAdapter = mAPIHelper.getRestAdapter();
@@ -102,19 +105,19 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
 
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
-        mConectandoDialogInstance= new ConectandoDialog();
+        mConnectingDialogInstance = new ConnectingDialog();
     }
 
-    private void bloqueaUI () {
+    private void blockUI() {
         mLogIn.setEnabled(false);
         mSignUp.setEnabled(false);
-        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
 
-    private void desbloqueaUI () {
+    private void unlockUI() {
         mLogIn.setEnabled(true);
         mSignUp.setEnabled(true);
-        mConectandoDialogInstance.dismiss();
+        mConnectingDialogInstance.dismiss();
     }
 
     View.OnClickListener logInClickListener = new View.OnClickListener() {
@@ -122,12 +125,12 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
         public void onClick(View v) {
             //Regla: Todos los campos son requeridos
             if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
-                muestraToast(getString(R.string.login_require_all));
+                showToast(getString(R.string.login_require_all));
                 return;
             }
 
             //Regla: La dirección de email debe ser válida
-            if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
+            if (!InputCheckHelper.isValidEmail(mMail.getText().toString())) {
                 mMail.setError(getString(R.string.login_not_valid_email));
                 return;
             }
@@ -154,34 +157,34 @@ public class LogInActivity extends FragmentActivity implements Callback<Usuario>
         }
     };
 
-    private void muestraToast (String mensaje) {
-        Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT).show();
+    private void showToast(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
     private void doLogIn(String email, String password) {
         mLogInService.logIn(email, password, this);
-        Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request enviado");
-        bloqueaUI();
+        Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
+        blockUI();
     }
 
     // **Inicio RETROFIT CALLBACKS**
     @Override
-    public void success(Usuario usuario, Response response) {
-        desbloqueaUI();
+    public void success(User user, Response response) {
+        unlockUI();
         if (response.getStatus() == 200) {
-            this.mUsuario = usuario;
-            mPreferencesEditor.putString(SESSION_KEY, this.mUsuario.sessionToken);
+            this.mUser = user;
+            mPreferencesEditor.putString(SESSION_KEY, this.mUser.sessionToken);
             mPreferencesEditor.apply();
-            muestraToast(getString(R.string.login_welcome));
+            showToast(getString(R.string.login_welcome));
         }
     }
 
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
-        desbloqueaUI();
-        if (error.getMessage().contains("404")) muestraToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
-        else muestraToast(getString(R.string.login_unable_to_connect));
+        unlockUI();
+        if (error.getMessage().contains("404")) showToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
+        else showToast(getString(R.string.login_unable_to_connect));
     }
     // **Fin RETROFIT CALLBACKS**
 
