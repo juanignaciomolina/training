@@ -110,13 +110,21 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private void blockUI() {
         mLogIn.setEnabled(false);
+        mLogIn.setTextColor(getResources().getColor(R.color.gray));
         mSignUp.setEnabled(false);
+        mSignUp.setTextColor(getResources().getColor(R.color.gray));
+        mMail.setEnabled(false);
+        mPassword.setEnabled(false);
         mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
 
     private void unlockUI() {
         mLogIn.setEnabled(true);
+        mLogIn.setTextColor(getResources().getColor(R.color.black));
         mSignUp.setEnabled(true);
+        mSignUp.setTextColor(getResources().getColor(R.color.white));
+        mMail.setEnabled(true);
+        mPassword.setEnabled(true);
         mConnectingDialogInstance.dismiss();
     }
 
