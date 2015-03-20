@@ -3,8 +3,9 @@ package ar.com.wolox.woloxtrainingmolina.entities;
 import java.util.Date;
 
 public class Usuario {
-    //Los nombres de las variables tienen que ser si o si así para que matcheen con el servidor
-    // y que Retrofit aproveche GSON para crear la instancia de usuario
+    //Los nombres de las variables son de esta forma para que matcheen con el servidor y no tener que
+    //definir una namePoliciy específica para usar la notación húngara (mVariable de instancia, sVariable de clase)
+    //Se puede crear una name policy, pero agrega complejidad inneccesaria al codigo.
     public String objectId;
     public String username;
     public String password;
