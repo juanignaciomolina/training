@@ -57,33 +57,52 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
         setContentView(R.layout.activity_log_in);
 
         mContext = getApplicationContext();
+
+        initPreferences(); //Preparar lo necesario para usar las SharedPreferences
+        setUI(); //findViewsById
+        setListeners(); //Bindear listeners a los botones
+        initUI(); //Cargar valores default de la UI
+        prepareAPIConnection();
+        initFragments(); //Preparar fragmentManager y fragments
+    }
+
+    private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        mPreferencesEditor = mPreferences.edit(); //Tremos un editor para las preferences
+    }
 
-        mFragmentManager = getSupportFragmentManager();
-        mConectandoDialogInstance= new ConectandoDialog();
-
+    private void setUI() {
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
         mLogIn = (Button) findViewById(R.id.btn_login);
         mSignUp = (Button) findViewById(R.id.btn_signup);
         mToS = (TextView) findViewById(R.id.tv_tos);
+    }
 
+    private void setListeners() {
         mLogIn.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
         mToS.setOnClickListener(this);
+    }
 
+    private void initUI() {
         //Si existen, se traen los valores guardados previamente para la dirección de email y el password
         String prefEmail = mPreferences.getString(EMAIL_KEY, null);
         String prefPassword = mPreferences.getString(PASSWORD_KEY, null);
-        mPreferencesEditor = mPreferences.edit(); //Tremos un editor para las preferences
-
         if (prefEmail != null) mMail.setText(prefEmail);
         if (prefPassword != null) mPassword.setText(prefPassword);
+    }
 
+    private void prepareAPIConnection () {
         //Preparamos una conexión a la API de Parse
         mAPIHelper = new ParseAPIHelper();
         mRestAdapter = mAPIHelper.getRestAdapter();
         mLogInService = mRestAdapter.create(LogInService.class);
+    }
+
+    private void initFragments() {
+        mFragmentManager = getSupportFragmentManager();
+        mConectandoDialogInstance= new ConectandoDialog();
     }
 
     public void onClick(View v) {
