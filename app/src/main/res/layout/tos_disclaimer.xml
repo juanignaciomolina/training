@@ -8,18 +8,18 @@
     android:gravity="center">
 
     <TextView
+        android:id="@+id/tv_disclaimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/login_disclaimer"
-        android:id="@+id/tv_disclaimer" />
+        android:text="@string/login_disclaimer" />
 
     <TextView
+        android:id="@+id/tv_tos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/login_tos"
-        android:id="@+id/tv_tos"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"/>
 </LinearLayout>

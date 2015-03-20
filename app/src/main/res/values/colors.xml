@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="blanco" type="color">#FFFFFFFF</item>
-    <item name="negro" type="color">#FF000000</item>
-    <item name="gris" type="color">#FFE6E6E4</item>
-    <item name="azul" type="color">#FF33B5E5</item>
-    <item name="violeta" type="color">#FFAA66CC</item>
-    <item name="verde" type="color">#FF99CC00</item>
-    <item name="naranja" type="color">#FFFFBB33</item>
-    <item name="rojo" type="color">#FFFF4444</item>
-    <item name="azul_oscuro" type="color">#FF0099CC</item>
-    <item name="violeta_oscuro" type="color">#FF9933CC</item>
-    <item name="verde_oscuro" type="color">#FF669900</item>
-    <item name="naranja_oscuro" type="color">#FFFF8800</item>
-    <item name="rojo_oscuro" type="color">#FFCC0000</item>
+    <item name="white" type="color">#FFFFFFFF</item>
+    <item name="black" type="color">#FF000000</item>
+    <item name="gray" type="color">#FFE6E6E4</item>
+    <item name="blue" type="color">#FF33B5E5</item>
+    <item name="purple" type="color">#FFAA66CC</item>
+    <item name="green" type="color">#FF99CC00</item>
+    <item name="orange" type="color">#FFFFBB33</item>
+    <item name="red" type="color">#FFFF4444</item>
+    <item name="darkblue" type="color">#FF0099CC</item>
+    <item name="darkpurple" type="color">#FF9933CC</item>
+    <item name="darkgreen" type="color">#FF669900</item>
+    <item name="darkorange" type="color">#FFFF8800</item>
+    <item name="darkred" type="color">#FFCC0000</item>
 
-    <item name="wolox_azul" type="color">#FF44A7CA</item>
-    <item name="wolox_verde" type="color">#FF88B85E</item>
-    <item name="wolox_rojo" type="color">#FFEE4136</item>
-    <item name="wolox_gris" type="color">#FFE6E6E4</item>
+    <item name="wolox_blue" type="color">#FF44A7CA</item>
+    <item name="wolox_green" type="color">#FF88B85E</item>
+    <item name="wolox_red" type="color">#FFEE4136</item>
+    <item name="wolox_gray" type="color">#FFE6E6E4</item>
 
-    <item name="btn_azul" type="color">#FF33B5E5</item>
+    <item name="btn_blue" type="color">#FF33B5E5</item>
     <item name="btn_regular" type="color">#FFFFFFFF</item>
-    <item name="btn_borde_gris" type="color">#FFE6E6E4</item>
+    <item name="btn_border_gray" type="color">#FFE6E6E4</item>
 
     <!-- Colores para las fuentes propuestos en los guidelines -->
     <item name="guideline_roboto_medium" type="color">#FF3BAFDA</item>
