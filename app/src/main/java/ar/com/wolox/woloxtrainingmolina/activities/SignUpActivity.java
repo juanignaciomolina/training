@@ -17,6 +17,7 @@ import android.widget.Toast;
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
+import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -63,6 +64,7 @@ public class SignUpActivity extends ActionBarActivity {
 
     private void blockUI() {
         mJoin.setEnabled(false);
+        mJoin.setTextColor(getResources().getColor(R.color.gray));
         mMail.setEnabled(false);
         mPassword.setEnabled(false);
         mConfirmPassword.setEnabled(false);
@@ -71,6 +73,7 @@ public class SignUpActivity extends ActionBarActivity {
 
     private void unlockUI() {
         mJoin.setEnabled(true);
+        mJoin.setTextColor(getResources().getColor(R.color.white));
         mMail.setEnabled(true);
         mPassword.setEnabled(true);
         mConfirmPassword.setEnabled(true);
@@ -80,6 +83,21 @@ public class SignUpActivity extends ActionBarActivity {
     View.OnClickListener joinClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //Regla: Todos los campos son requeridos
+            if (    mMail.getText().toString().equals("")
+                    || mPassword.getText().toString().equals("")
+                    || mConfirmPassword.getText().toString().equals("")) {
+                showToast(getString(R.string.login_require_all));
+                return;
+            }
+
+            //Regla: La dirección de email debe ser válida
+            if (!InputCheckHelper.isValidEmail(mMail.getText().toString())) {
+                mMail.setError(getString(R.string.login_not_valid_email));
+                return;
+            }
+
+
             //TODO Logica para crear un usuario
         }
     };
