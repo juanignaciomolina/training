@@ -24,7 +24,7 @@
     <item name="btn_regular" type="color">#FFFFFFFF</item>
     <item name="btn_border_gray" type="color">#FFE6E6E4</item>
 
-    <item name="action_bar_gray" type="color">#FFFDFBFA</item>
+    <item name="action_bar_gray" type="color">#FFE6E6E4</item>
 
     <!-- Colores para las fuentes propuestos en los guidelines -->
     <item name="guideline_roboto_medium" type="color">#FF3BAFDA</item>
