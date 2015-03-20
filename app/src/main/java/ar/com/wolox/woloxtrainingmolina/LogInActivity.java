@@ -23,7 +23,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class LogInActivity extends FragmentActivity implements View.OnClickListener, Callback<Usuario> {
+public class LogInActivity extends FragmentActivity implements Callback<Usuario> {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -80,9 +80,9 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void setListeners() {
-        mLogIn.setOnClickListener(this);
-        mSignUp.setOnClickListener(this);
-        mToS.setOnClickListener(this);
+        mLogIn.setOnClickListener(logInClickListener);
+        mSignUp.setOnClickListener(signUpClickListener);
+        mToS.setOnClickListener(tosClickListener);
     }
 
     private void initUI() {
@@ -105,40 +105,54 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
         mConectandoDialogInstance= new ConectandoDialog();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.btn_login: // LogIn button
-
-                //Regla: La dirección de email debe ser válida
-                if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
-                    mMail.setError(getString(R.string.login_not_valid_email));
-                    return;
-                }
-
-                //Regla: Todos los campos son requeridos
-                if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
-                    muestraToast(getString(R.string.login_require_all));
-                    return;
-                }
-
-                mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
-                mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
-                mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
-
-                doLogIn(mMail.getText().toString(), mPassword.getText().toString());
-
-                break;
-
-            case R.id.btn_signup: // SignUp button
-                startActivity(new Intent(this, SignUpActivity.class));
-                break;
-
-            case R.id.tv_tos: // Terms of Service textView
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
-                break;
-        }
+    private void bloqueaUI () {
+        mLogIn.setEnabled(false);
+        mSignUp.setEnabled(false);
+        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
+
+    private void desbloqueaUI () {
+        mLogIn.setEnabled(true);
+        mSignUp.setEnabled(true);
+        mConectandoDialogInstance.dismiss();
+    }
+
+    View.OnClickListener logInClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //Regla: Todos los campos son requeridos
+            if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
+                muestraToast(getString(R.string.login_require_all));
+                return;
+            }
+
+            //Regla: La dirección de email debe ser válida
+            if (!InputCheckHelper.validaEmail(mMail.getText().toString())) {
+                mMail.setError(getString(R.string.login_not_valid_email));
+                return;
+            }
+
+            mPreferencesEditor.putString(EMAIL_KEY, mMail.getText().toString());
+            mPreferencesEditor.putString(PASSWORD_KEY, mPassword.getText().toString());
+            mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
+
+            doLogIn(mMail.getText().toString(), mPassword.getText().toString());
+        }
+    };
+
+    View.OnClickListener signUpClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(mContext, SignUpActivity.class));
+        }
+    };
+
+    View.OnClickListener tosClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
+        }
+    };
 
     private void muestraToast (String mensaje) {
         Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT).show();
@@ -150,7 +164,7 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
         bloqueaUI();
     }
 
-    //RETROFIT CALLBACKS
+    // **Inicio RETROFIT CALLBACKS**
     @Override
     public void success(Usuario usuario, Response response) {
         desbloqueaUI();
@@ -169,17 +183,6 @@ public class LogInActivity extends FragmentActivity implements View.OnClickListe
         if (error.getMessage().contains("404")) muestraToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
         else muestraToast(getString(R.string.login_unable_to_connect));
     }
-
-    private void bloqueaUI () {
-        mLogIn.setEnabled(false);
-        mSignUp.setEnabled(false);
-        mConectandoDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
-    }
-
-    private void desbloqueaUI () {
-        mLogIn.setEnabled(true);
-        mSignUp.setEnabled(true);
-        mConectandoDialogInstance.dismiss();
-    }
+    // **Fin RETROFIT CALLBACKS**
 
 }
