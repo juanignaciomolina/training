@@ -32,6 +32,7 @@ public class SignUpActivity extends ActionBarActivity {
     private EditText mConfirmPassword;
     private Button mJoin;
     private TextView mToS;
+    private Toolbar mToolbar;
 
     private FragmentManager mFragmentManager;
     private ConnectingDialog mConnectingDialogInstance;
@@ -43,17 +44,8 @@ public class SignUpActivity extends ActionBarActivity {
 
         mContext = getApplicationContext();
 
-        // Set a toolbar to replace the action bar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setElevation(Config.UI_ELEVATION);
-        getSupportActionBar().setTitle(null);
-        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
-        logo.setImageResource(R.drawable.topbarlogo);
-        TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
-        activity_name.setText(R.string.title_activity_sign_up);
-
         setUI();
+        setToolbar();
         setListeners();
         initFragments();
     }
@@ -64,6 +56,18 @@ public class SignUpActivity extends ActionBarActivity {
         mConfirmPassword = (EditText) findViewById(R.id.et_password_confirm);
         mJoin = (Button) findViewById(R.id.btn_join);
         mToS = (TextView) findViewById(R.id.tv_tos);
+    }
+
+    private void setToolbar() {
+        // Set a toolbar to replace the action bar.
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setElevation(Config.UI_ELEVATION);
+        getSupportActionBar().setTitle(null); //El title lo ponemos en toolbar_title sino queda a la izquierda del logo
+        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
+        logo.setImageResource(R.drawable.topbarlogo);
+        TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
+        activity_name.setText(R.string.title_activity_sign_up);
     }
 
     private void setListeners() {
