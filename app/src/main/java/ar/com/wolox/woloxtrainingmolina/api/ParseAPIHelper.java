@@ -7,6 +7,10 @@ import retrofit.RestAdapter;
 public class ParseAPIHelper {
 
     private String mSessionToken;
+    private boolean mContentTypeJSON;
+
+    private static final String CONTENT_HEADER = "Content-Type";
+    private static final String CONTENT_JSON = "application/json";
 
     RequestInterceptor requestInterceptor = new RequestInterceptor() {
         @Override
@@ -14,6 +18,7 @@ public class ParseAPIHelper {
             request.addHeader(Config.PARSE_APP_HEADER, Config.PARSE_APP_ID);
             request.addHeader(Config.PARSE_REST_HEADER, Config.PARSE_REST_KEY);
             if (mSessionToken != null) request.addHeader(Config.PARSE_TOKEN_HEADER, mSessionToken);
+            if (mContentTypeJSON) request.addHeader(CONTENT_HEADER, CONTENT_JSON);
         }
     };
 
@@ -31,6 +36,10 @@ public class ParseAPIHelper {
 
     public String getSessionToken() {
         return mSessionToken;
+    }
+
+    public void setContentTypeToJSON(boolean value) {
+        this.mContentTypeJSON = value;
     }
 
     public RestAdapter getRestAdapter() {
