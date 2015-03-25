@@ -3,15 +3,12 @@ package ar.com.wolox.woloxtrainingmolina.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,14 +59,14 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         mContext = getApplicationContext();
 
         initPreferences();
-        setUI();
+        setUi();
         setToolbar();
         setListeners();
         initAPIConnection();
         initFragments();
     }
 
-    private void setUI() {
+    private void setUi() {
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
         mConfirmPassword = (EditText) findViewById(R.id.et_password_confirm);

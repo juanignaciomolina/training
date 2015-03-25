@@ -57,17 +57,17 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mContext = getApplicationContext();
 
         initPreferences(); //Preparar lo necesario para usar las SharedPreferences
-        setUI(); //findViewsById
+        setUi(); //findViewsById
         setListeners(); //Bindear listeners a los botones
-        initUI(); //Cargar valores default de la UI
-        initAPIConnection();
+        initUi(); //Cargar valores default de la UI
+        initApiConnection();
         initFragments(); //Preparar fragmentManager y fragments
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initUI();
+        initUi();
     }
 
     private void initPreferences() {
@@ -75,7 +75,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
     }
 
-    private void setUI() {
+    private void setUi() {
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
         mLogIn = (Button) findViewById(R.id.btn_login);
@@ -89,7 +89,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mToS.setOnClickListener(tosClickListener);
     }
 
-    private void initUI() {
+    private void initUi() {
         //Si existen, se traen los valores guardados previamente para la dirección de email y el password
         String prefEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
         String prefPassword = mPreferences.getString(Config.LOGIN_PASSWORD_KEY, null);
@@ -97,7 +97,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         if (prefPassword != null) mPassword.setText(prefPassword);
     }
 
-    private void initAPIConnection() {
+    private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
         mAPIHelper = new ParseAPIHelper();
         mRestAdapter = mAPIHelper.getRestAdapter();
@@ -109,7 +109,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mConnectingDialogInstance = new ConnectingDialog();
     }
 
-    private void blockUI() {
+    private void blockUi() {
         mLogIn.setEnabled(false);
         mLogIn.setTextColor(getResources().getColor(R.color.gray));
         mSignUp.setEnabled(false);
@@ -119,7 +119,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
 
-    private void unlockUI() {
+    private void unlockUi() {
         mLogIn.setEnabled(true);
         mLogIn.setTextColor(getResources().getColor(R.color.black));
         mSignUp.setEnabled(true);
@@ -177,13 +177,13 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     private void doLogIn(String email, String password) {
         mLogInService.logIn(email, password, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
-        blockUI();
+        blockUi();
     }
 
     // **Inicio RETROFIT CALLBACKS**
     @Override
     public void success(User user, Response response) {
-        unlockUI();
+        unlockUi();
         if (response.getStatus() == 200) {
             this.mUser = user;
             mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
@@ -195,7 +195,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
-        unlockUI();
+        unlockUi();
         mUser = (User) error.getBody();
         if (mUser == null) {
             showToast(getString(R.string.login_unable_to_connect));
