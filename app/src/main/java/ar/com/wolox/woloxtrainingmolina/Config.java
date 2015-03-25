@@ -10,6 +10,7 @@ public class Config {
     public static final String PARSE_APP_ID = "kLRpYZ9OqIMFJ8zDyrqFlJhWEAabsO20bfZfBXgT";
     public static final String PARSE_REST_HEADER = "X-Parse-REST-API-Key";
     public static final String PARSE_REST_KEY = "c2Vi5MRQx5WxhppghBZy4KYIGjQ6U0CeLAY6UHXO";
+    public static final String PARSE_TOKEN_HEADER = "X-Parse-Session-Token";
 
     public static final String PARSE_API_URL = "https://api.parse.com/1";
     public static final String PARSE_LOGIN = "/login";
