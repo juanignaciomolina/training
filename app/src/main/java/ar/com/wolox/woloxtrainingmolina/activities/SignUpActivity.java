@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
-import ar.com.wolox.woloxtrainingmolina.api.LogInService;
 import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
 import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
 import ar.com.wolox.woloxtrainingmolina.entities.*;
@@ -184,8 +183,12 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
     public void success(User user, Response response) {
         unlockUI();
         if (response.getStatus() == 201) { //Status 201: Usuario creado
-            this.mUser = user;
-            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, this.mUser.email);
+            //Nota: No se puede hacer this.mUser = user porque Parse no devuelve todos los atributos en el SignUp,
+            //algunos atributos quedarían incompletos
+            this.mUser.createdAt = user.createdAt;
+            this.mUser.objectId = user.objectId;
+            this.mUser.sessionToken = user.sessionToken;
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, this.mUser.username);
             mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, this.mUser.password);
             mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
             mPreferencesEditor.apply();

@@ -64,6 +64,12 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         initFragments(); //Preparar fragmentManager y fragments
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initUI();
+    }
+
     private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
         mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
