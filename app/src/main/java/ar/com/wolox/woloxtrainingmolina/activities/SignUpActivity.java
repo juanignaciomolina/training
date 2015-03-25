@@ -115,6 +115,11 @@ public class SignUpActivity extends ActionBarActivity {
                 return;
             }
 
+            //Regla: El campo "contraseña" y "confirmar contraseña" deben coincidir
+            if (!mPassword.getText().toString().equals(mConfirmPassword.getText().toString())) {
+                mConfirmPassword.setError(getString(R.string.signup_passwords_dont_match));
+                return;
+            }
 
             //TODO Logica para crear un usuario
         }

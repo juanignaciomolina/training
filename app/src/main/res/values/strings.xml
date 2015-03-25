@@ -18,4 +18,5 @@
     <string name="title_activity_sign_up">Sign up</string>
     <string name="signup_confirm_password">Confirm password</string>
     <string name="signup_join">JOIN</string>
+    <string name="signup_passwords_dont_match">Passwords don\'t match</string>
 </resources>
