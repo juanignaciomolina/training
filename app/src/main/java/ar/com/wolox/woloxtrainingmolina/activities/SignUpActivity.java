@@ -133,27 +133,30 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
     View.OnClickListener joinClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            String mail = mMail.getText().toString().trim();
+            String password = mPassword.getText().toString().trim();
+            String confirmPassword = mConfirmPassword.getText().toString().trim();
+
             //Regla: Todos los campos son requeridos
-            if (    mMail.getText().toString().equals("")
-                    || mPassword.getText().toString().equals("")
-                    || mConfirmPassword.getText().toString().equals("")) {
+            if ( mail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ) {
                 showToast(getString(R.string.login_require_all));
                 return;
             }
 
             //Regla: La dirección de email debe ser válida
-            if (!InputCheckHelper.isValidEmail(mMail.getText().toString())) {
+            if (!InputCheckHelper.isValidEmail(mail)) {
                 mMail.setError(getString(R.string.login_not_valid_email));
                 return;
             }
 
             //Regla: El campo "contraseña" y "confirmar contraseña" deben coincidir
-            if (!mPassword.getText().toString().equals(mConfirmPassword.getText().toString())) {
+            if (!password.equals(confirmPassword)) {
                 mConfirmPassword.setError(getString(R.string.signup_passwords_dont_match));
                 return;
             }
 
-            doSignUp(mMail.getText().toString(), mPassword.getText().toString());
+            doSignUp(mail, password);
         }
     };
 
