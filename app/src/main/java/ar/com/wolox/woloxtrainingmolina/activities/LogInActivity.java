@@ -132,23 +132,27 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     View.OnClickListener logInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            String mail = mMail.getText().toString().trim();
+            String password = mPassword.getText().toString().trim();
+
             //Regla: Todos los campos son requeridos
-            if (mMail.getText().toString().equals("") || mPassword.getText().toString().equals("")) {
+            if (mail.isEmpty() || password.isEmpty()) {
                 showToast(getString(R.string.login_require_all));
                 return;
             }
 
             //Regla: La dirección de email debe ser válida
-            if (!InputCheckHelper.isValidEmail(mMail.getText().toString())) {
+            if (!InputCheckHelper.isValidEmail(mail)) {
                 mMail.setError(getString(R.string.login_not_valid_email));
                 return;
             }
 
-            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mMail.getText().toString());
-            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mPassword.getText().toString());
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mail);
+            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, password);
             mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
 
-            doLogIn(mMail.getText().toString(), mPassword.getText().toString());
+            doLogIn(mail, password);
         }
     };
 
