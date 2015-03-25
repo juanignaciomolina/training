@@ -17,8 +17,20 @@ public class ParseAPIHelper {
         }
     };
 
-    ParseAPIHelper(String sessionToken) {
+    public ParseAPIHelper(String sessionToken) {
         this.mSessionToken = sessionToken;
+    }
+
+    public ParseAPIHelper() {
+        this.mSessionToken = null;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.mSessionToken = sessionToken;
+    }
+
+    public String getSessionToken() {
+        return mSessionToken;
     }
 
     public RestAdapter getRestAdapter() {
