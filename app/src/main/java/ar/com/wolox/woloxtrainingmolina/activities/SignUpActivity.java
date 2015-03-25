@@ -185,12 +185,12 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         if (response.getStatus() == 201) { //Status 201: Usuario creado
             //Nota: No se puede hacer this.mUser = user porque Parse no devuelve todos los atributos en el SignUp,
             //algunos atributos quedarían incompletos
-            this.mUser.createdAt = user.createdAt;
-            this.mUser.objectId = user.objectId;
-            this.mUser.sessionToken = user.sessionToken;
-            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, this.mUser.username);
-            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, this.mUser.password);
-            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
+            mUser.createdAt = user.createdAt;
+            mUser.objectId = user.objectId;
+            mUser.sessionToken = user.sessionToken;
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mUser.username);
+            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.password);
+            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.sessionToken);
             mPreferencesEditor.apply();
             showToast("User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
         }

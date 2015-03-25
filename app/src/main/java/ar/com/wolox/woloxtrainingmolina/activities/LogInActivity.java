@@ -175,6 +175,10 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     }
 
     private void doLogIn(String email, String password) {
+        mUser = new User();
+        mUser.username = email;
+        mUser.password = password;
+
         mLogInService.logIn(email, password, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
         blockUi();
@@ -185,8 +189,8 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     public void success(User user, Response response) {
         unlockUi();
         if (response.getStatus() == 200) {
-            this.mUser = user;
-            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
+            mUser.sessionToken = user.sessionToken;
+            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.sessionToken);
             mPreferencesEditor.apply();
             showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
         }
