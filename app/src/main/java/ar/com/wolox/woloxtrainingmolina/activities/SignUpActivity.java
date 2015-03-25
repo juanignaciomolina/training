@@ -2,15 +2,18 @@ package ar.com.wolox.woloxtrainingmolina.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,16 @@ public class SignUpActivity extends ActionBarActivity {
 
         mContext = getApplicationContext();
 
+        // Set a toolbar to replace the action bar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(Config.UI_ELEVATION);
+        getSupportActionBar().setTitle(null);
+        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
+        logo.setImageResource(R.drawable.topbarlogo);
+        TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
+        activity_name.setText(R.string.title_activity_sign_up);
+
         setUI();
         setListeners();
         initFragments();
@@ -48,6 +61,7 @@ public class SignUpActivity extends ActionBarActivity {
     private void setUI() {
         mMail = (EditText) findViewById(R.id.et_email);
         mPassword = (EditText) findViewById(R.id.et_password);
+        mConfirmPassword = (EditText) findViewById(R.id.et_password_confirm);
         mJoin = (Button) findViewById(R.id.btn_join);
         mToS = (TextView) findViewById(R.id.tv_tos);
     }
