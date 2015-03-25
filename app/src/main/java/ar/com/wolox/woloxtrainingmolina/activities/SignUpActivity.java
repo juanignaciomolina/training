@@ -62,7 +62,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         setUi();
         setToolbar();
         setListeners();
-        initAPIConnection();
+        initApiConnection();
         initFragments();
     }
 
@@ -91,7 +91,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         activity_name.setText(R.string.title_activity_sign_up);
     }
 
-    private void initAPIConnection() {
+    private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
         mAPIHelper = new ParseAPIHelper();
         mAPIHelper.setContentTypeToJSON(true);
@@ -109,7 +109,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         mConnectingDialogInstance = new ConnectingDialog();
     }
 
-    private void blockUI() {
+    private void blockUi() {
         mJoin.setEnabled(false);
         mJoin.setTextColor(getResources().getColor(R.color.gray));
         mMail.setEnabled(false);
@@ -118,7 +118,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
     }
 
-    private void unlockUI() {
+    private void unlockUi() {
         mJoin.setEnabled(true);
         mJoin.setTextColor(getResources().getColor(R.color.white));
         mMail.setEnabled(true);
@@ -175,13 +175,13 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
 
         mSignUpService.signUp(mUser, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
-        blockUI();
+        blockUi();
     }
 
     // **Inicio RETROFIT CALLBACKS**
     @Override
     public void success(User user, Response response) {
-        unlockUI();
+        unlockUi();
         if (response.getStatus() == 201) { //Status 201: Usuario creado
             //Nota: No se puede hacer this.mUser = user porque Parse no devuelve todos los atributos en el SignUp,
             //algunos atributos quedarían incompletos
@@ -199,7 +199,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
     @Override
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
-        unlockUI();
+        unlockUi();
         mUser = (User) error.getBody();
         if (mUser == null) {
             showToast(getString(R.string.login_unable_to_connect));
