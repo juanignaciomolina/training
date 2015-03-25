@@ -7,5 +7,5 @@ import retrofit.http.POST;
 
 public interface SignUpService {
     @POST(Config.PARSE_USERS)
-    void signUp(@Body User user, retrofit.Callback<User> usuarioCallback);
+    void signUp(@Body User user, retrofit.Callback<User> userCallback);
 }
