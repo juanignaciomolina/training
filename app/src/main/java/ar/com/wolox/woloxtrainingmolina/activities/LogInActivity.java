@@ -178,7 +178,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
             this.mUser = user;
             mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
             mPreferencesEditor.apply();
-            showToast(getString(R.string.login_welcome));
+            showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
         }
     }
 
@@ -186,8 +186,12 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     public void failure(RetrofitError error) {
         Log.e(Config.LOG_ERROR, error.getMessage());
         unlockUI();
-        if (error.getMessage().contains("404")) showToast(getString(R.string.login_wrong_credentials)); //Error 404: Usuario y/o contraseña invalidos
-        else showToast(getString(R.string.login_unable_to_connect));
+        mUser = (User) error.getBody();
+        if (mUser == null) {
+            showToast(getString(R.string.login_unable_to_connect));
+            return;
+        }
+        if (mUser.code.contains("101")) showToast(getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
     }
     // **Fin RETROFIT CALLBACKS**
 

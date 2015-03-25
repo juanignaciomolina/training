@@ -20,4 +20,6 @@ public class User {
     public String picture;
     public String createdAt;
     public String updatedAt;
+    public String code;
+    public String error;
 }

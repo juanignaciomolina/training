@@ -2,12 +2,14 @@ package ar.com.wolox.woloxtrainingmolina.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,13 +21,23 @@ import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.api.LogInService;
+import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
+import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
+import ar.com.wolox.woloxtrainingmolina.entities.*;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
-public class SignUpActivity extends ActionBarActivity {
+public class SignUpActivity extends ActionBarActivity implements Callback<User> {
 
     private Context mContext;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
 
     private EditText mMail;
     private EditText mPassword;
@@ -33,6 +45,12 @@ public class SignUpActivity extends ActionBarActivity {
     private Button mJoin;
     private TextView mToS;
     private Toolbar mToolbar;
+
+    private ParseAPIHelper mAPIHelper;
+    private SignUpService mSignUpService;
+    private RestAdapter mRestAdapter;
+
+    private User mUser;
 
     private FragmentManager mFragmentManager;
     private ConnectingDialog mConnectingDialogInstance;
@@ -44,9 +62,11 @@ public class SignUpActivity extends ActionBarActivity {
 
         mContext = getApplicationContext();
 
+        initPreferences();
         setUI();
         setToolbar();
         setListeners();
+        initAPIConnection();
         initFragments();
     }
 
@@ -56,6 +76,11 @@ public class SignUpActivity extends ActionBarActivity {
         mConfirmPassword = (EditText) findViewById(R.id.et_password_confirm);
         mJoin = (Button) findViewById(R.id.btn_join);
         mToS = (TextView) findViewById(R.id.tv_tos);
+    }
+
+    private void initPreferences() {
+        mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
     }
 
     private void setToolbar() {
@@ -68,6 +93,14 @@ public class SignUpActivity extends ActionBarActivity {
         logo.setImageResource(R.drawable.topbarlogo);
         TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
         activity_name.setText(R.string.title_activity_sign_up);
+    }
+
+    private void initAPIConnection() {
+        //Preparamos una conexión a la API de Parse
+        mAPIHelper = new ParseAPIHelper();
+        mAPIHelper.setContentTypeToJSON(true);
+        mRestAdapter = mAPIHelper.getRestAdapter();
+        mSignUpService = mRestAdapter.create(SignUpService.class);
     }
 
     private void setListeners() {
@@ -121,7 +154,7 @@ public class SignUpActivity extends ActionBarActivity {
                 return;
             }
 
-            //TODO Logica para crear un usuario
+            doSignUp(mMail.getText().toString(), mPassword.getText().toString());
         }
     };
 
@@ -135,5 +168,42 @@ public class SignUpActivity extends ActionBarActivity {
     private void showToast(String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
+
+    private void doSignUp(String email, String password) {
+        mUser = new User();
+        mUser.username = email;
+        mUser.password = password;
+
+        mSignUpService.signUp(mUser, this);
+        Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
+        blockUI();
+    }
+
+    // **Inicio RETROFIT CALLBACKS**
+    @Override
+    public void success(User user, Response response) {
+        unlockUI();
+        if (response.getStatus() == 201) { //Status 201: Usuario creado
+            this.mUser = user;
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, this.mUser.email);
+            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, this.mUser.password);
+            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, this.mUser.sessionToken);
+            mPreferencesEditor.apply();
+            showToast("User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
+        }
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(Config.LOG_ERROR, error.getMessage());
+        unlockUI();
+        mUser = (User) error.getBody();
+        if (mUser == null) {
+            showToast(getString(R.string.login_unable_to_connect));
+            return;
+        }
+        if (mUser.code.contains("202")) showToast(getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
+    }
+    // **Fin RETROFIT CALLBACKS**
 
 }
