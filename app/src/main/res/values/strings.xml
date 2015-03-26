@@ -10,15 +10,15 @@
     <string name="login_btn_login">LOG IN</string>
     <string name="login_btn_signup">SIGN UP</string>
     <string name="login_require_all">Every field is required</string>
-    <string name="login_not_valid_email">Not a valid email adress</string>
-    <string name="login_wrong_credentials">Sorry... Please check your email and password and try again :)</string>
+    <string name="login_not_valid_email">Not a valid email address</string>
+    <string name="login_wrong_credentials">Sorry… Please check your email and password and try again :)</string>
     <string name="login_unable_to_connect">Unable to connect to the server, try again later</string>
-    <string name="progressdialog_connecting">Connecting...</string>
+    <string name="progressdialog_connecting">Connecting…</string>
     <string name="login_welcome">Welcome!</string>
     <string name="title_activity_sign_up">Sign up</string>
     <string name="signup_confirm_password">Confirm password</string>
     <string name="signup_join">JOIN</string>
     <string name="signup_passwords_dont_match">Passwords don\'t match</string>
-    <string name="signup_invalid_username">Invalid username, please choose another one</string>
+    <string name="signup_invalid_username">Username unavailable, please choose another one</string>
     <string name="error_connection_unknown">Unknown connection error</string>
 </resources>
