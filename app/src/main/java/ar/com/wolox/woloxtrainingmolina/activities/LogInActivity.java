@@ -152,7 +152,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         public void onClick(View v) {
 
             String mail = mMail.getText().toString().trim();
-            String password = mPassword.getText().toString().trim();
+            String password = mPassword.getText().toString();
 
             //Regla: Todos los campos son requeridos
             if (mail.isEmpty() || password.isEmpty()) {
