@@ -45,6 +45,8 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private User mUser;
 
+    private boolean mActivityIsVisible;
+
     private FragmentManager mFragmentManager;
     private ConnectingDialog mConnectingDialogInstance;
 
@@ -54,7 +56,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        mContext = getApplicationContext();
+        mContext = this;
 
         initPreferences(); //Preparar lo necesario para usar las SharedPreferences
         setUi(); //findViewsById
@@ -65,9 +67,21 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        initUi();
+    protected void onRestart() {
+        super.onRestart();
+        initUi(); //Esto va en el onRestart() por si cambiaron los datos de las shared preferences
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mActivityIsVisible = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mActivityIsVisible = false;
     }
 
     private void initPreferences() {
@@ -110,23 +124,27 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     }
 
     private void blockUi() {
-        mLogIn.setEnabled(false);
-        mLogIn.setTextColor(getResources().getColor(R.color.gray));
-        mSignUp.setEnabled(false);
-        mSignUp.setTextColor(getResources().getColor(R.color.gray));
-        mMail.setEnabled(false);
-        mPassword.setEnabled(false);
-        mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        if (mActivityIsVisible) {
+            mLogIn.setEnabled(false);
+            mLogIn.setTextColor(getResources().getColor(R.color.gray));
+            mSignUp.setEnabled(false);
+            mSignUp.setTextColor(getResources().getColor(R.color.gray));
+            mMail.setEnabled(false);
+            mPassword.setEnabled(false);
+            mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        }
     }
 
     private void unlockUi() {
-        mLogIn.setEnabled(true);
-        mLogIn.setTextColor(getResources().getColor(R.color.black));
-        mSignUp.setEnabled(true);
-        mSignUp.setTextColor(getResources().getColor(R.color.white));
-        mMail.setEnabled(true);
-        mPassword.setEnabled(true);
-        mConnectingDialogInstance.dismiss();
+        if (mActivityIsVisible) {
+            mLogIn.setEnabled(true);
+            mLogIn.setTextColor(getResources().getColor(R.color.black));
+            mSignUp.setEnabled(true);
+            mSignUp.setTextColor(getResources().getColor(R.color.white));
+            mMail.setEnabled(true);
+            mPassword.setEnabled(true);
+            mConnectingDialogInstance.dismiss();
+        }
     }
 
     View.OnClickListener logInClickListener = new View.OnClickListener() {

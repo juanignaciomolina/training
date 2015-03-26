@@ -48,6 +48,8 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
 
     private User mUser;
 
+    private boolean mActivityIsVisible;
+
     private FragmentManager mFragmentManager;
     private ConnectingDialog mConnectingDialogInstance;
 
@@ -56,7 +58,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mContext = getApplicationContext();
+        mContext = this;
 
         initPreferences();
         setUi();
@@ -64,6 +66,18 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         setListeners();
         initApiConnection();
         initFragments();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mActivityIsVisible = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mActivityIsVisible = false;
     }
 
     private void setUi() {
@@ -110,21 +124,25 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
     }
 
     private void blockUi() {
-        mJoin.setEnabled(false);
-        mJoin.setTextColor(getResources().getColor(R.color.gray));
-        mMail.setEnabled(false);
-        mPassword.setEnabled(false);
-        mConfirmPassword.setEnabled(false);
-        mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        if (mActivityIsVisible) {
+            mJoin.setEnabled(false);
+            mJoin.setTextColor(getResources().getColor(R.color.gray));
+            mMail.setEnabled(false);
+            mPassword.setEnabled(false);
+            mConfirmPassword.setEnabled(false);
+            mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+        }
     }
 
     private void unlockUi() {
-        mJoin.setEnabled(true);
-        mJoin.setTextColor(getResources().getColor(R.color.white));
-        mMail.setEnabled(true);
-        mPassword.setEnabled(true);
-        mConfirmPassword.setEnabled(true);
-        mConnectingDialogInstance.dismiss();
+        if (mActivityIsVisible) {
+            mJoin.setEnabled(true);
+            mJoin.setTextColor(getResources().getColor(R.color.white));
+            mMail.setEnabled(true);
+            mPassword.setEnabled(true);
+            mConfirmPassword.setEnabled(true);
+            mConnectingDialogInstance.dismiss();
+        }
     }
 
     View.OnClickListener joinClickListener = new View.OnClickListener() {
