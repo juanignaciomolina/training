@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"News","Profile"};
+    CharSequence Titles[]={"NEWS","PROFILE"};
     int Numboftabs =2;
 
     @Override
@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabs.setCustomTabView(R.layout.tab, R.id.tab_tv);
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -60,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
         // Set a toolbar to replace the action bar.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setElevation(0);
+        //getSupportActionBar().setElevation(2);
         getSupportActionBar().setTitle(null); //El title lo ponemos en toolbar_title sino queda a la izquierda del logo
         ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
         logo.setImageResource(R.drawable.topbarlogo);

@@ -227,7 +227,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
             //Customizado para cambiar el color de la tab cuando es seleccionada
             tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_selector));
-            tabTitleView.setTextSize(14);
+            //tabTitleView.setTextSize(14);
         }
     }
 
