@@ -10,14 +10,12 @@
         android:id="@+id/tab_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/profileon"
-        android:layout_gravity="center"/>
+        android:src="@drawable/profileon"/>
 
     <TextView
         android:id="@+id/tab_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:layout_gravity="center"/>
+        android:text="Small Text"/>
 </LinearLayout>

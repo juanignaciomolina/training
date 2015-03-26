@@ -23,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"NEWS","PROFILE"};
+    int mImageResources[]={R.drawable.newsoff, R.drawable.profileoff};
     int Numboftabs =2;
 
     @Override
@@ -33,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
         setToolbar();
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs, mImageResources);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
@@ -42,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-        tabs.setCustomTabView(R.layout.tab, R.id.tab_tv);
+        tabs.setCustomTabView(R.layout.tab, R.id.tab_tv, R.id.tab_img);
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
