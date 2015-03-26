@@ -16,8 +16,10 @@ import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.LogInService;
 import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
+import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
@@ -29,7 +31,7 @@ import retrofit.client.Response;
 
 public class LogInActivity extends FragmentActivity implements Callback<User> {
 
-    private Context mContext;
+    private TrainingApp mContext;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
@@ -56,7 +58,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        mContext = this;
+        mContext = (TrainingApp) getApplicationContext();
 
         initPreferences(); //Preparar lo necesario para usar las SharedPreferences
         setUi(); //findViewsById
@@ -113,9 +115,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
-        mAPIHelper = new ParseAPIHelper();
-        mRestAdapter = mAPIHelper.getRestAdapter();
-        mLogInService = mRestAdapter.create(LogInService.class);
+        mLogInService = mContext.getRestAdapter().create(LogInService.class);
     }
 
     private void initFragments() {

@@ -38,7 +38,7 @@ public class ParseAPIHelper {
         return mSessionToken;
     }
 
-    public void setContentTypeToJSON(boolean value) {
+    public void setContentTypeToJson(boolean value) {
         this.mContentTypeJSON = value;
     }
 

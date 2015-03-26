@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
 import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
 import ar.com.wolox.woloxtrainingmolina.entities.*;
@@ -31,7 +32,7 @@ import retrofit.client.Response;
 
 public class SignUpActivity extends ActionBarActivity implements Callback<User> {
 
-    private Context mContext;
+    private TrainingApp mContext;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
@@ -42,9 +43,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
     private TextView mToS;
     private Toolbar mToolbar;
 
-    private ParseAPIHelper mAPIHelper;
     private SignUpService mSignUpService;
-    private RestAdapter mRestAdapter;
 
     private User mUser;
 
@@ -58,7 +57,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mContext = this;
+        mContext = (TrainingApp) getApplicationContext();
 
         initPreferences();
         setUi();
@@ -107,10 +106,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
 
     private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
-        mAPIHelper = new ParseAPIHelper();
-        mAPIHelper.setContentTypeToJSON(true);
-        mRestAdapter = mAPIHelper.getRestAdapter();
-        mSignUpService = mRestAdapter.create(SignUpService.class);
+        mSignUpService = mContext.getRestAdapter().create(SignUpService.class);
     }
 
     private void setListeners() {
