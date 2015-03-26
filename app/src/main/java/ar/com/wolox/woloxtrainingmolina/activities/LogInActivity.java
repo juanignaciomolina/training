@@ -206,11 +206,17 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     @Override
     public void success(User user, Response response) {
         unlockUi();
-        if (response.getStatus() == 200) {
+        if (response.getStatus() == 200) { //Status 200: Log in OK
             mUser.setSessionToken(user.getSessionToken());
             mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
             mPreferencesEditor.apply();
             showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
+        }
+        //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
+        //haya logeado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
+        else {
+            showToast(getString(R.string.error_connection_unknown));
+            Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
         }
     }
 

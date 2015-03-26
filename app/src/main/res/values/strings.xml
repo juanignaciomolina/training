@@ -20,4 +20,5 @@
     <string name="signup_join">JOIN</string>
     <string name="signup_passwords_dont_match">Passwords don\'t match</string>
     <string name="signup_invalid_username">Invalid username, please choose another one</string>
+    <string name="error_connection_unknown">Unknown connection error</string>
 </resources>

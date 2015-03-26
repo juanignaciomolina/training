@@ -212,6 +212,12 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
             mPreferencesEditor.apply();
             showToast("User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
         }
+        //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
+        //haya creado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
+        else {
+            showToast(getString(R.string.error_connection_unknown));
+            Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
+        }
     }
 
     @Override
