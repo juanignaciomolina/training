@@ -31,7 +31,7 @@ import retrofit.client.Response;
 
 public class LogInActivity extends FragmentActivity implements Callback<User> {
 
-    private TrainingApp mContext;
+    private Context mContext;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
@@ -58,7 +58,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        mContext = (TrainingApp) getApplicationContext();
+        mContext = this;
 
         initPreferences(); //Preparar lo necesario para usar las SharedPreferences
         setUi(); //findViewsById
@@ -115,7 +115,7 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
-        mLogInService = mContext.getRestAdapter().create(LogInService.class);
+        mLogInService = TrainingApp.getRestAdapter().create(LogInService.class);
     }
 
     private void initFragments() {

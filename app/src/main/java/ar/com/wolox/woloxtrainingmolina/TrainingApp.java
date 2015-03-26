@@ -7,8 +7,8 @@ import retrofit.RestAdapter;
 
 public class TrainingApp extends Application {
 
-    public static ParseAPIHelper sParseAPIHelper;
-    public static RestAdapter sRestAdapter;
+    private static ParseAPIHelper sParseAPIHelper;
+    private static RestAdapter sRestAdapter;
 
     //La instancia del ParseAPIHelper se crea on-demand si ya no había sido creada
     public static ParseAPIHelper getParseApiHelper() {

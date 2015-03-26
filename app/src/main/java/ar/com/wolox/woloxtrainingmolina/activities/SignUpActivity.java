@@ -32,7 +32,7 @@ import retrofit.client.Response;
 
 public class SignUpActivity extends ActionBarActivity implements Callback<User> {
 
-    private TrainingApp mContext;
+    private Context mContext;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
@@ -57,7 +57,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mContext = (TrainingApp) getApplicationContext();
+        mContext = this;
 
         initPreferences();
         setUi();
@@ -106,7 +106,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
 
     private void initApiConnection() {
         //Preparamos una conexión a la API de Parse
-        mSignUpService = mContext.getRestAdapter().create(SignUpService.class);
+        mSignUpService = TrainingApp.getRestAdapter().create(SignUpService.class);
     }
 
     private void setListeners() {
