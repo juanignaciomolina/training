@@ -19,7 +19,6 @@ import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.LogInService;
 import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
-import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
@@ -29,7 +28,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class LogInActivity extends FragmentActivity implements Callback<User> {
+public class LogInActivity extends FragmentActivity {
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -71,7 +70,10 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
     @Override
     protected void onRestart() {
         super.onRestart();
-        initUi(); //Esto va en el onRestart() por si cambiaron los datos de las shared preferences
+        // Esto va en el onRestart() por si cambiaron los datos de las shared preferences mientras el
+        // usuario estaba haciendo SignUp en otra Activity.
+        // Igualmente no debería suceder nunca en el flow normal de la app, es solo para situaciones muy raras.
+        initUi();
     }
 
     @Override
@@ -101,8 +103,8 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
 
     private void setListeners() {
         mLogIn.setOnClickListener(logInClickListener);
-        mSignUp.setOnClickListener(signUpClickListener);
-        mToS.setOnClickListener(tosClickListener);
+        mSignUp.setOnClickListener(mSignUpClickListener);
+        mToS.setOnClickListener(mTosClickListener);
     }
 
     private void initUi() {
@@ -174,20 +176,6 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         }
     };
 
-    View.OnClickListener signUpClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startActivity(new Intent(mContext, SignUpActivity.class));
-        }
-    };
-
-    View.OnClickListener tosClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
-        }
-    };
-
     private void showToast(String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
@@ -197,40 +185,58 @@ public class LogInActivity extends FragmentActivity implements Callback<User> {
         mUser.setUsername(email);
         mUser.setPassword(password);
 
-        mLogInService.logIn(email, password, this);
+        mLogInService.logIn(email, password, mLogInCallback);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
         blockUi();
     }
 
-    // **Inicio RETROFIT CALLBACKS**
-    @Override
-    public void success(User user, Response response) {
-        unlockUi();
-        if (response.getStatus() == 200) { //Status 200: Log in OK
-            mUser.setSessionToken(user.getSessionToken());
-            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
-            mPreferencesEditor.apply();
-            showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
-        }
-        //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
-        //haya logeado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
-        else {
-            showToast(getString(R.string.error_connection_unknown));
-            Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
-        }
-    }
+    // ** CLASES ANONIMAS **
 
-    @Override
-    public void failure(RetrofitError error) {
-        Log.e(Config.LOG_ERROR, error.getMessage());
-        unlockUi();
-        mUser = (User) error.getBody();
-        if (mUser == null) {
-            showToast(getString(R.string.login_unable_to_connect));
-            return;
+    View.OnClickListener mSignUpClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(mContext, SignUpActivity.class));
         }
-        if (mUser.getCode().contains("101")) showToast(getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
-    }
-    // **Fin RETROFIT CALLBACKS**
+    };
+
+    View.OnClickListener mTosClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
+        }
+    };
+
+    Callback<User> mLogInCallback = new Callback<User>() {
+        @Override
+        public void success(User user, Response response) {
+            unlockUi();
+            if (response.getStatus() == 200) { //Status 200: Log in OK
+                mUser.setSessionToken(user.getSessionToken());
+                mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
+                mPreferencesEditor.apply();
+                showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
+            }
+            //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
+            //haya logeado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
+            else {
+                showToast(getString(R.string.error_connection_unknown));
+                Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(Config.LOG_ERROR, error.getMessage());
+            unlockUi();
+            mUser = (User) error.getBody();
+            if (mUser == null) {
+                showToast(getString(R.string.login_unable_to_connect));
+                return;
+            }
+            if (mUser.getCode().contains("101")) showToast(getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
+        }
+    };
+
+    // ** Fin de CLASES ANONIMAS **
 
 }
