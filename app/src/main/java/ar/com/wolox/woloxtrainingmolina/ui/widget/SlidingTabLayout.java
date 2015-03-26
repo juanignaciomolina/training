@@ -18,7 +18,6 @@ package ar.com.wolox.woloxtrainingmolina.ui.widget;
 
         import android.content.Context;
         import android.graphics.Typeface;
-        import android.support.v4.view.PagerAdapter;
         import android.support.v4.view.ViewPager;
         import android.util.AttributeSet;
         import android.util.SparseArray;
@@ -220,7 +219,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
-            tabImageView.setImageResource(adapter.getPageImage(i));
+            tabImageView.setImageResource(adapter.getPageImage(i)); //Hackeado para que las tabs admitan imágenes dinámicass
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {
@@ -233,7 +232,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             //Customizado para cambiar el color de la tab cuando es seleccionada
-            tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_selector));
+            tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_text_selector));
             //tabTitleView.setTextSize(14);
         }
     }

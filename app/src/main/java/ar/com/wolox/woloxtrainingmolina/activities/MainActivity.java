@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"NEWS","PROFILE"};
-    int mImageResources[]={R.drawable.newsoff, R.drawable.profileoff};
+    int mImageResources[]={R.drawable.tab_news_img_selector, R.drawable.tab_profile_img_selector};
     int Numboftabs =2;
 
     @Override
