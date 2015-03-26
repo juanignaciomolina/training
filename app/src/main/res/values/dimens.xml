@@ -12,6 +12,7 @@
 
     <dimen name="guideline_boton">40dp</dimen>
     <dimen name="guideline_editText">40dp</dimen>
+    <dimen name="guideline_tab_text">10sp</dimen>
 
     <!-- Dimensiones acordes a las fuentes utilizadas en las guidelines-->
     <dimen name="guideline_roboto_medium">155.56sp</dimen>
