@@ -5,16 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".TrainingApp"
         android:allowBackup="true"
         android:icon="@drawable/topbarlogo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".TrainingApp">
+        android:theme="@style/AppTheme" >
         <activity
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:name=".activities.LogInActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,11 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:name=".activities.SignUpActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:icon="@drawable/topbarlogo"
             android:label="@string/title_activity_sign_up"
-            android:icon="@drawable/topbarlogo">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 

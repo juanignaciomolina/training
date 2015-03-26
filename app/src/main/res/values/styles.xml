@@ -3,6 +3,9 @@
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:colorPrimary">@color/ColorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="android:colorAccent">@color/accent</item>
     </style>
 
     <style name="button.regular" parent="@android:style/Widget.Button">

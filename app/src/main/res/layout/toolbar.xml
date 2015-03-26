@@ -3,7 +3,6 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_alignParentTop="true"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/action_bar_gray"
         android:layout_width="match_parent"
