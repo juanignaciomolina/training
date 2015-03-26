@@ -30,12 +30,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // Creating The Toolbar and setting it as the Toolbar for the activity
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
+        setToolbar();
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
@@ -65,12 +60,12 @@ public class MainActivity extends ActionBarActivity {
         // Set a toolbar to replace the action bar.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setElevation(Config.UI_ELEVATION);
+        getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(null); //El title lo ponemos en toolbar_title sino queda a la izquierda del logo
         ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
         logo.setImageResource(R.drawable.topbarlogo);
         TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
-        activity_name.setText(R.string.title_activity_sign_up);
+        activity_name.setText(R.string.general_company_name);
     }
 
 }
