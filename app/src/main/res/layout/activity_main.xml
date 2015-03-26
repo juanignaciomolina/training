@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ar.com.wolox.woloxtrainingmolina.ui.MainActivity"
+    tools:context="ar.com.wolox.woloxtrainingmolina.activities.MainActivity"
     android:orientation="vertical">
 
     <include
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="2dp"
-        android:background="@color/ColorPrimary"/>
+        android:background="@color/action_bar_gray"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
