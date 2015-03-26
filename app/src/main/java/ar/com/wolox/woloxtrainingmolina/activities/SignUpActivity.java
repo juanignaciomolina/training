@@ -170,8 +170,8 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
 
     private void doSignUp(String email, String password) {
         mUser = new User();
-        mUser.username = email;
-        mUser.password = password;
+        mUser.setUsername(email);
+        mUser.setPassword(password);
 
         mSignUpService.signUp(mUser, this);
         Log.d(Config.LOG_DEBUG, "(Retrofit) Log in request send");
@@ -185,12 +185,12 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
         if (response.getStatus() == 201) { //Status 201: Usuario creado
             //Nota: No se puede hacer this.mUser = user porque Parse no devuelve todos los atributos en el SignUp,
             //algunos atributos quedarían incompletos
-            mUser.createdAt = user.createdAt;
-            mUser.objectId = user.objectId;
-            mUser.sessionToken = user.sessionToken;
-            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mUser.username);
-            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.password);
-            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.sessionToken);
+            mUser.setCreatedAt(user.getCreatedAt());
+            mUser.setObjectId(user.getObjectId());
+            mUser.setSessionToken(user.getSessionToken());
+            mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mUser.getUsername());
+            mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.getPassword());
+            mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
             mPreferencesEditor.apply();
             showToast("User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
         }
@@ -205,7 +205,7 @@ public class SignUpActivity extends ActionBarActivity implements Callback<User> 
             showToast(getString(R.string.login_unable_to_connect));
             return;
         }
-        if (mUser.code.contains("202")) showToast(getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
+        if (mUser.getCode().contains("202")) showToast(getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
     }
     // **Fin RETROFIT CALLBACKS**
 
