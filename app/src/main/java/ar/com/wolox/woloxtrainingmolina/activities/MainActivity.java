@@ -10,6 +10,7 @@ import android.widget.TextView;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
+import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -26,7 +27,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setToolbar();
+        mToolbar = UiHelper.setToolbar(
+                this,
+                R.id.toolbar,
+                R.id.toolbar_title,
+                getString(R.string.general_company_name),
+                R.id.toolbar_logo,
+                R.drawable.topbarlogo);
         initVars();
         initTabs();
 
@@ -61,17 +68,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Se le asigna el ViewPager al SlidingTabLayout
         mTabs.setViewPager(mPager);
-    }
-
-    private void setToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        //getSupportActionBar().setElevation(2);
-        getSupportActionBar().setTitle(null); //El title lo ponemos en toolbar_title sino queda a la izquierda del logo
-        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
-        logo.setImageResource(R.drawable.topbarlogo);
-        TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
-        activity_name.setText(R.string.general_company_name);
     }
 
 }
