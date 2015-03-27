@@ -34,7 +34,7 @@ public class UiHelper {
         return local_toolbar;
     }
 
-    private static void showToast(Context context, String message) {
+    public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 

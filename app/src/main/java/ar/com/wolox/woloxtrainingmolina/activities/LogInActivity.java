@@ -22,6 +22,7 @@ import ar.com.wolox.woloxtrainingmolina.api.ParseAPIHelper;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
+import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -158,7 +159,7 @@ public class LogInActivity extends FragmentActivity {
 
             //Regla: Todos los campos son requeridos
             if (mail.isEmpty() || password.isEmpty()) {
-                showToast(getString(R.string.login_require_all));
+                UiHelper.showToast(mContext, getString(R.string.login_require_all));
                 return;
             }
 
@@ -176,9 +177,9 @@ public class LogInActivity extends FragmentActivity {
         }
     };
 
-    private void showToast(String message) {
+    /*private void showToast(String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
     private void doLogIn(String email, String password) {
         mUser = new User();
@@ -214,12 +215,12 @@ public class LogInActivity extends FragmentActivity {
                 mUser.setSessionToken(user.getSessionToken());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                showToast(getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
             }
             //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
             //haya logeado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
             else {
-                showToast(getString(R.string.error_connection_unknown));
+                UiHelper.showToast(mContext, getString(R.string.error_connection_unknown));
                 Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
             }
         }
@@ -230,10 +231,10 @@ public class LogInActivity extends FragmentActivity {
             unlockUi();
             mUser = (User) error.getBody();
             if (mUser == null) {
-                showToast(getString(R.string.login_unable_to_connect));
+                UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("101")) showToast(getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
+            if (mUser.getCode().contains("101")) UiHelper.showToast(mContext, getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
         }
     };
 

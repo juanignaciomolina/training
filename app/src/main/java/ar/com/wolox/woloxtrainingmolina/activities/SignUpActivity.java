@@ -23,6 +23,7 @@ import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
 import ar.com.wolox.woloxtrainingmolina.entities.*;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
+import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -59,10 +60,10 @@ public class SignUpActivity extends ActionBarActivity {
 
         initPreferences();
         setUi();
-        setToolbar();
         setListeners();
         initApiConnection();
         initFragments();
+
     }
 
     @Override
@@ -83,23 +84,18 @@ public class SignUpActivity extends ActionBarActivity {
         mConfirmPassword = (EditText) findViewById(R.id.et_password_confirm);
         mJoin = (Button) findViewById(R.id.btn_join);
         mToS = (TextView) findViewById(R.id.tv_tos);
+        mToolbar = UiHelper.setToolbar(
+                this,
+                R.id.toolbar,
+                R.id.toolbar_title,
+                getString(R.string.title_activity_sign_up),
+                R.id.toolbar_logo,
+                R.drawable.topbarlogo);
     }
 
     private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
         mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
-    }
-
-    private void setToolbar() {
-        // Set a toolbar to replace the action bar.
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setElevation(Config.UI_ELEVATION);
-        getSupportActionBar().setTitle(null); //El title lo ponemos en toolbar_title sino queda a la izquierda del logo
-        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
-        logo.setImageResource(R.drawable.topbarlogo);
-        TextView activity_name = (TextView) findViewById(R.id.toolbar_title);
-        activity_name.setText(R.string.title_activity_sign_up);
     }
 
     private void initApiConnection() {
@@ -139,10 +135,6 @@ public class SignUpActivity extends ActionBarActivity {
         }
     }
 
-    private void showToast(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }
-
     private void doSignUp(String email, String password) {
         mUser = new User();
         mUser.setUsername(email);
@@ -165,7 +157,7 @@ public class SignUpActivity extends ActionBarActivity {
 
             //Regla: Todos los campos son requeridos
             if ( mail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ) {
-                showToast(getString(R.string.login_require_all));
+                UiHelper.showToast(mContext, getString(R.string.login_require_all));
                 return;
             }
 
@@ -206,12 +198,12 @@ public class SignUpActivity extends ActionBarActivity {
                 mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.getPassword());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                showToast("User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, "User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
             }
             //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
             //haya creado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
             else {
-                showToast(getString(R.string.error_connection_unknown));
+                UiHelper.showToast(mContext, getString(R.string.error_connection_unknown));
                 Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
             }
 
@@ -223,10 +215,10 @@ public class SignUpActivity extends ActionBarActivity {
             unlockUi();
             mUser = (User) error.getBody();
             if (mUser == null) {
-                showToast(getString(R.string.login_unable_to_connect));
+                UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("202")) showToast(getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
+            if (mUser.getCode().contains("202")) UiHelper.showToast(mContext, getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
         }
     };
 
