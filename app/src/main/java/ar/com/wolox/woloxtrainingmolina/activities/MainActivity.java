@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
 
         //Si la version del OS es LOLLIPOP en adelante se usa elevation, sino se
         //usa una elevation fake con una imagen con degrade. Hay que hacer esto
-        //porque los SlidingTabLayout no son compatibles con elevation pre lollipop
+        //porque los SlidingTabLayout no son compatibles con elevation pre LOLLIPOP
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             findViewById(R.id.support_elevation).setVisibility(View.GONE);
             mToolbar.setElevation(5);
