@@ -1,9 +1,12 @@
 package ar.com.wolox.woloxtrainingmolina.activities;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,15 +30,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = UiHelper.setToolbar(
-                this,
-                R.id.toolbar,
-                R.id.toolbar_title,
-                getString(R.string.general_company_name),
-                R.id.toolbar_logo,
-                R.drawable.topbarlogo);
         initVars();
         initTabs();
+        initUi();
 
     }
 
@@ -44,6 +41,30 @@ public class MainActivity extends ActionBarActivity {
         mTitles[1] = getString(R.string.fragment_profile_name);
         mImageResources[0] = R.drawable.tab_news_img_selector;
         mImageResources[1] = R.drawable.tab_profile_img_selector;
+    }
+
+    private void initUi() {
+        mToolbar = UiHelper.setToolbar(
+                this,
+                R.id.toolbar,
+                R.id.toolbar_title,
+                getString(R.string.general_company_name),
+                R.id.toolbar_logo,
+                R.drawable.topbarlogo);
+
+        //Si la version del OS es LOLLIPOP en adelante se usa elevation, sino se
+        //usa una elevation fake con una imagen con degrade. Hay que hacer esto
+        //porque los SlidingTabLayout no son compatibles con elevation pre lollipop
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.support_elevation).setVisibility(View.GONE);
+            mToolbar.setElevation(5);
+            mTabs.setElevation(5);
+        }
+        else {
+            getSupportActionBar().setElevation(0);
+            findViewById(R.id.support_elevation).setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initTabs(){

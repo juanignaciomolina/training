@@ -8,15 +8,20 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:elevation="2dp"/>
+        layout="@layout/toolbar"/>
 
     <ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="@dimen/guideline_amarillo"
-        android:elevation="2dp"
-        android:background="@color/action_bar_gray"/>
+        android:background="@color/action_bar_gray"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/support_elevation"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/support_elevation"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

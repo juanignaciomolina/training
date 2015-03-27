@@ -27,6 +27,6 @@ public class Config {
     public static final String LOG_ERROR = "Wolox - Error: ";
 
     //UI
-    public static final int UI_ELEVATION = 5;
+    public static final int UI_ELEVATION = 2;
 
 }
