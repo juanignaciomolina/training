@@ -1,5 +1,8 @@
 package ar.com.wolox.woloxtrainingmolina.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,18 +13,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.activities.SignUpActivity;
 import ar.com.wolox.woloxtrainingmolina.entities.ItemNews;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
+import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 
 public class NewsFragment extends Fragment {
+
+    private Activity mActivity;
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFab;
+    private LinearLayout mNoNewsHolder;
+
+    private ItemNews mItemNews[] = {};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,12 +44,16 @@ public class NewsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_news);
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
+        mActivity = getActivity();
 
-        // todo dummy data for testing purposes
-        ItemNews itemsData[] = {
+        initVars();
+        initUi();
+
+    }
+
+    private void initVars() {
+        //todo dummy data for testing
+        ItemNews itemsNews[] = {
                 new ItemNews("Nicola Dille", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "15m"),
                 new ItemNews("Carmelina Teston", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "18m"),
                 new ItemNews("Sanford Hamrick", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "32m"),
@@ -52,24 +67,35 @@ public class NewsFragment extends Fragment {
                 new ItemNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
                 new ItemNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
 
+        mItemNews = itemsNews;
+    }
+
+    private void initUi() {
+        mRecyclerView = (RecyclerView) mActivity.findViewById(R.id.recycler_view_news);
+        mFab = (FloatingActionButton) mActivity.findViewById(R.id.fab);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mActivity.findViewById(R.id.swipe_refresh_layout);
+        mNoNewsHolder = (LinearLayout) mActivity.findViewById(R.id.no_news_holder);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(itemsData);
+        NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(mItemNews);
         mRecyclerView.setAdapter(mAdapter);
         // todo customize animations extending RecyclerView.ItemAnimator class
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mFab.attachToRecyclerView(mRecyclerView); //this is for the mFab animation
+        mFab.setOnClickListener(mFabClickListener);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                refreshItems();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(mSwipeRefreshListener);
+
+        if (mItemNews != null && mItemNews.length > 0) displayNoNews(false);
     }
 
-    void refreshItems() {
+    private void displayNoNews(boolean state) {
+        if (state) mNoNewsHolder.setVisibility(View.VISIBLE);
+        else mNoNewsHolder.setVisibility(View.GONE);
+    }
+
+    private void refreshItems() {
         // Load items
         // ...
 
@@ -77,11 +103,30 @@ public class NewsFragment extends Fragment {
         onItemsLoadComplete();
     }
 
-    void onItemsLoadComplete() {
+    private void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
         // ...
 
         // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
+    // ** ANONYMOUS CLASSES **
+
+    View.OnClickListener mFabClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            UiHelper.showToast(mActivity, "FAB Click");
+        }
+    };
+
+    SwipeRefreshLayout.OnRefreshListener mSwipeRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            // Refresh items
+            refreshItems();
+        }
+    };
+
+    // ** End of ANONYMOUS CLASSES **
 }
