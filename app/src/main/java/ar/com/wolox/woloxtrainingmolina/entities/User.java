@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class User {
 
-    //Los nombres de las variables son de esta forma para que matcheen con el servidor y no tener que
-    //definir una namePolicy específica para usar la notación húngara (mVariable de instancia, sVariable de clase)
-    //Se puede crear una name policy, pero agrega complejidad inneccesaria al codigo.
+    //The vars identifiers should be like these so that they match with the server side attributes and can be
+    //converted directly using GSON on the API requests. To modify this behaviour we would need to implement
+    // a custom name policy, but doing so adds unnecessary complex to the app's code.
     private String objectId;
     private String username;
     private String password;

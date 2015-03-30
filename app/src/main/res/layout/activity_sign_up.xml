@@ -41,7 +41,7 @@
 
         <include
             layout="@layout/tos_disclaimer"
-            android:layout_height="@dimen/guideline_amarillo"
+            android:layout_height="@dimen/guideline_yellow"
             android:layout_width="match_parent"/>
 
         <Button

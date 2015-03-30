@@ -27,7 +27,8 @@ public class UiHelper {
 
         activity.setSupportActionBar(local_toolbar);
         activity.getSupportActionBar().setElevation(Config.UI_ELEVATION);
-        activity.getSupportActionBar().setTitle(null); //El title lo ponemos en view_title sino queda a la izquierda del logo
+        //We place the tittle in view_title. Otherwise it would end up on the left side of the logo
+        activity.getSupportActionBar().setTitle(null);
         local_logo.setImageResource(logo);
         local_title.setText(title);
 

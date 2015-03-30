@@ -10,7 +10,7 @@
 
         <ImageView
             android:id="@+id/toolbar_logo"
-            android:layout_width="@dimen/guideline_violeta"
+            android:layout_width="@dimen/guideline_purple"
             android:layout_height="wrap_content"
             android:scaleType="fitStart" />
 
