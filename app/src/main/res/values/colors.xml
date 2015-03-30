@@ -18,6 +18,8 @@
 
     <item name="action_bar_gray" type="color">#FFE6E6E4</item>
 
+    <item name="item_separator" type="color">#FFE6E6E4</item>
+
     <item name="training_green" type="color">#FF99CC00</item>
     <item name="training_green_dark" type="color">#FF88B85E</item>
     <item name="training_blue" type="color">#FF33B5E5</item>

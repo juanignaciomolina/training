@@ -6,10 +6,13 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <ListView
-        android:id="@android:id/list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_news"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:divider="#FFCC00"
+        android:dividerHeight="1px"/>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
