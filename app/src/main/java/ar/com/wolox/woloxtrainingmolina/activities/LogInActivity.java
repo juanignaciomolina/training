@@ -177,10 +177,6 @@ public class LogInActivity extends FragmentActivity {
         }
     };
 
-    /*private void showToast(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }*/
-
     private void doLogIn(String email, String password) {
         mUser = new User();
         mUser.setUsername(email);
@@ -231,10 +227,17 @@ public class LogInActivity extends FragmentActivity {
             unlockUi();
             mUser = (User) error.getBody();
             if (mUser == null) {
-                UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("101")) UiHelper.showToast(mContext, getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
+            //Error 101: Usuario y/o contraseña invalidos
+            if (mUser.getCode().contains("101")) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.login_wrong_credentials));
+            }
         }
     };
 

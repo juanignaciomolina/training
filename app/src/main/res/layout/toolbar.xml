@@ -3,10 +3,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/action_bar_gray"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/action_bar_gray">
 
         <ImageView
             android:id="@+id/toolbar_logo"

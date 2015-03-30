@@ -63,7 +63,6 @@ public class SignUpActivity extends ActionBarActivity {
         setListeners();
         initApiConnection();
         initFragments();
-
     }
 
     @Override
@@ -198,7 +197,7 @@ public class SignUpActivity extends ActionBarActivity {
                 mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.getPassword());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                UiHelper.showToast(mContext, "User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, getString(R.string.signup_user_created)); //TODO En lugar de mostrar el mensaje abrir la activity principal
             }
             //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
             //haya creado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
@@ -218,7 +217,12 @@ public class SignUpActivity extends ActionBarActivity {
                 UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("202")) UiHelper.showToast(mContext, getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
+            //Error 202: El usuario ya existe
+            if (mUser.getCode().contains("202")) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.signup_invalid_username));
+            }
         }
     };
 
