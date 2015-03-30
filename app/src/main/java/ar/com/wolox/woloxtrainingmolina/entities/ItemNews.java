@@ -1,13 +1,20 @@
 package ar.com.wolox.woloxtrainingmolina.entities;
 
 public class ItemNews {
-    private String title;
-    private int imageUrl;
 
-    public ItemNews (String title,int imageUrl) {
+    private String title;
+    private String content;
+    private int imageUrl;
+    private boolean like;
+    private String date;
+
+    public ItemNews (String title, String content, int imageUrl, boolean like, String date) {
 
         this.title = title;
+        this.content = content;
         this.imageUrl = imageUrl;
+        this.like = like;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -24,5 +31,29 @@ public class ItemNews {
 
     public void setImageUrl(int imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean getLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

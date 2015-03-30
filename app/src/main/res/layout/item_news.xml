@@ -21,7 +21,7 @@
 
         <!-- icon -->
         <ImageView
-            android:id="@+id/item_icon"
+            android:id="@+id/item_image"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_alignParentLeft="true"
@@ -36,15 +36,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/item_icon"
-            android:layout_toEndOf="@+id/item_icon"
+            android:layout_toRightOf="@+id/item_image"
+            android:layout_toEndOf="@+id/item_image"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:text="User Name"/>
 
         <!-- fav icon-->
         <ImageView
-            android:id="@+id/like_icon"
+            android:id="@+id/item_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -52,9 +52,9 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/likeoff"/>
 
-        <!-- time -->
+        <!-- date -->
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -65,13 +65,13 @@
 
         <!-- content -->
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/item_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/item_icon"
-            android:layout_toEndOf="@+id/item_icon"
+            android:layout_toRightOf="@+id/item_image"
+            android:layout_toEndOf="@+id/item_image"
             android:layout_below="@id/item_title"
-            android:layout_toLeftOf="@id/like_icon"
+            android:layout_toLeftOf="@id/item_like"
             android:textSize="16dp"
             android:text="I'll be in your neighborhood doing errands..."
             android:minLines="2" />

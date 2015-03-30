@@ -33,18 +33,18 @@ public class NewsFragment extends Fragment {
 
         // todo dummy data for testing purposes
         ItemNews itemsData[] = {
-                new ItemNews("Ali Connors 1",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 2",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 3",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 4",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 5",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 6",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 7",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 8",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 9",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 10",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 11",R.drawable.item_news_placeholder),
-                new ItemNews("Ali Connors 12",R.drawable.item_news_placeholder)};
+                new ItemNews("Nicola Dille", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "15m"),
+                new ItemNews("Carmelina Teston", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "18m"),
+                new ItemNews("Sanford Hamrick", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "32m"),
+                new ItemNews("Jina Hersom", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "42m"),
+                new ItemNews("Brendan Nemeth", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "9m"),
+                new ItemNews("Stanton Riggenbach", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "17m"),
+                new ItemNews("Shaunna Drozd", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "14m"),
+                new ItemNews("Thresa Lashley", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "29m"),
+                new ItemNews("Shante Evensen", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "35m"),
+                new ItemNews("Jesus Sera", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "52m"),
+                new ItemNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
+                new ItemNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(itemsData);
