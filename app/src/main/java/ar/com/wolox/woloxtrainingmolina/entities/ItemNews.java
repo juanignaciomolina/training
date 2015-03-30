@@ -10,7 +10,6 @@ public class ItemNews {
         this.imageUrl = imageUrl;
     }
 
-    // getters & setters
     public String getTitle() {
         return title;
     }

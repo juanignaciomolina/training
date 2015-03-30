@@ -21,8 +21,6 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
@@ -30,35 +28,30 @@ public class NewsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // 1. get a reference to recyclerView
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_news);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
-        // this is data fro recycler view
+        // todo dummy data for testing purposes
         ItemNews itemsData[] = {
-                new ItemNews("Item: 1",R.drawable.topbarlogo),
-                new ItemNews("Item: 2",R.drawable.topbarlogo),
-                new ItemNews("Item: 3",R.drawable.topbarlogo),
-                new ItemNews("Item: 4",R.drawable.topbarlogo),
-                new ItemNews("Item: 5",R.drawable.topbarlogo),
-                new ItemNews("Item: 6",R.drawable.topbarlogo),
-                new ItemNews("Item: 7",R.drawable.topbarlogo),
-                new ItemNews("Item: 8",R.drawable.topbarlogo),
-                new ItemNews("Item: 9",R.drawable.topbarlogo),
-                new ItemNews("Item: 10",R.drawable.topbarlogo),
-                new ItemNews("Item: 11",R.drawable.topbarlogo),
-                new ItemNews("Item: 12",R.drawable.topbarlogo)};
+                new ItemNews("Ali Connors 1",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 2",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 3",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 4",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 5",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 6",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 7",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 8",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 9",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 10",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 11",R.drawable.item_news_placeholder),
+                new ItemNews("Ali Connors 12",R.drawable.item_news_placeholder)};
 
-        // 2. set layoutManger
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        // 3. create an adapter
         NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(itemsData);
-        // 4. set adapter
         recyclerView.setAdapter(mAdapter);
-        // 5. set item animator to DefaultAnimator
+        // todo customize animations extending RecyclerView.ItemAnimator class
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.attachToRecyclerView(recyclerView);
-
+        fab.attachToRecyclerView(recyclerView); //this is for the fab animation
     }
 }

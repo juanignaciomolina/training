@@ -1,40 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="fill_parent"
-    android:layout_height="80dp"
+    android:layout_height="@dimen/guideline_verde_oscuro"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/white"
-    >
-
-    <!-- icon -->
-    <ImageView
-        android:id="@+id/item_icon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:contentDescription="icon"
-        android:src="@drawable/topbarlogo"
-        />
-
-    <!-- title -->
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/item_icon"
-        android:layout_alignBaseline="@+id/item_icon"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="22dp" />
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/action_bar_gray"/>
+        android:layout_height="1dp"
+        android:background="@color/item_separator"/>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <!-- icon -->
+        <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp"
+            android:contentDescription="icon"
+            android:scaleType="fitStart"
+            android:src="@drawable/item_news_placeholder"/>
+
+        <!-- title -->
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/item_icon"
+            android:layout_toEndOf="@+id/item_icon"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:text="User Name"/>
+
+        <!-- fav icon-->
+        <ImageView
+            android:id="@+id/like_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/likeoff"/>
+
+        <!-- time -->
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="15m"/>
+
+        <!-- content -->
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/item_icon"
+            android:layout_toEndOf="@+id/item_icon"
+            android:layout_below="@id/item_title"
+            android:layout_toLeftOf="@id/like_icon"
+            android:textSize="16dp"
+            android:text="I'll be in your neighborhood doing errands..."
+            android:minLines="2" />
+
+    </RelativeLayout>
+
+</LinearLayout>
