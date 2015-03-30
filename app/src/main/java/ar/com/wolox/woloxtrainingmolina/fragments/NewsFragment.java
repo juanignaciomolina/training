@@ -3,6 +3,7 @@ package ar.com.wolox.woloxtrainingmolina.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,10 @@ import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
 
 public class NewsFragment extends Fragment {
 
+    private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private FloatingActionButton mFab;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,8 +33,9 @@ public class NewsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_news);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_news);
+        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
 
         // todo dummy data for testing purposes
         ItemNews itemsData[] = {
@@ -46,12 +52,36 @@ public class NewsFragment extends Fragment {
                 new ItemNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
                 new ItemNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(itemsData);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         // todo customize animations extending RecyclerView.ItemAnimator class
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        fab.attachToRecyclerView(recyclerView); //this is for the fab animation
+        mFab.attachToRecyclerView(mRecyclerView); //this is for the mFab animation
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+            }
+        });
+    }
+
+    void refreshItems() {
+        // Load items
+        // ...
+
+        // Load complete
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        // ...
+
+        // Stop refresh animation
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
