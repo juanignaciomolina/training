@@ -60,20 +60,20 @@ public class LogInActivity extends FragmentActivity {
 
         mContext = this;
 
-        initPreferences(); //Preparar lo necesario para usar las SharedPreferences
+        initPreferences(); //Get ready the SharedPreferences
         setUi(); //findViewsById
-        setListeners(); //Bindear listeners a los botones
-        initUi(); //Cargar valores default de la UI
+        setListeners(); //Bindear listeners to buttons
+        initUi(); //Load UI default values
         initApiConnection();
-        initFragments(); //Preparar fragmentManager y fragments
+        initFragments(); //Get ready the fragmentManager and the fragments
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        // Esto va en el onRestart() por si cambiaron los datos de las shared preferences mientras el
-        // usuario estaba haciendo SignUp en otra Activity.
-        // Igualmente no debería suceder nunca en el flow normal de la app, es solo para situaciones muy raras.
+        //This goes in the onRestart() method in case the shared preferences data changed while the
+        //user was signing up on another activity
+        //In any case, this should never happen in the app's normal flow.
         initUi();
     }
 
@@ -91,7 +91,7 @@ public class LogInActivity extends FragmentActivity {
 
     private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
+        mPreferencesEditor = mPreferences.edit();
     }
 
     private void setUi() {
@@ -109,7 +109,7 @@ public class LogInActivity extends FragmentActivity {
     }
 
     private void initUi() {
-        //Si existen, se traen los valores guardados previamente para la dirección de email y el password
+        //Get the stored values for the email and passwords fields (in case they exist)
         String prefEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
         String prefPassword = mPreferences.getString(Config.LOGIN_PASSWORD_KEY, null);
         if (prefEmail != null) mMail.setText(prefEmail);
@@ -117,7 +117,7 @@ public class LogInActivity extends FragmentActivity {
     }
 
     private void initApiConnection() {
-        //Preparamos una conexión a la API de Parse
+        //Get a connection to the Parsi API by requesting it to the app level class
         mLogInService = TrainingApp.getRestAdapter().create(LogInService.class);
     }
 
@@ -157,13 +157,13 @@ public class LogInActivity extends FragmentActivity {
             String mail = mMail.getText().toString().trim();
             String password = mPassword.getText().toString();
 
-            //Regla: Todos los campos son requeridos
+            //Rule: Every field is required
             if (mail.isEmpty() || password.isEmpty()) {
                 UiHelper.showToast(mContext, getString(R.string.login_require_all));
                 return;
             }
 
-            //Regla: La dirección de email debe ser válida
+            //Rule: must be a valid email adress
             if (!InputCheckHelper.isValidEmail(mail)) {
                 mMail.setError(getString(R.string.login_not_valid_email));
                 return;
@@ -171,15 +171,11 @@ public class LogInActivity extends FragmentActivity {
 
             mPreferencesEditor.putString(Config.LOGIN_EMAIL_KEY, mail);
             mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, password);
-            mPreferencesEditor.apply(); //Nota: se usa apply() en lugar de commit() porque apply() trabaja en el background
+            mPreferencesEditor.apply(); //Note: we use apply() instead of commit() because apply() works in the background
 
             doLogIn(mail, password);
         }
     };
-
-    /*private void showToast(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }*/
 
     private void doLogIn(String email, String password) {
         mUser = new User();
@@ -191,7 +187,7 @@ public class LogInActivity extends FragmentActivity {
         blockUi();
     }
 
-    // ** CLASES ANONIMAS **
+    // ** ANONYMOUS CLASSES **
 
     View.OnClickListener mSignUpClickListener = new View.OnClickListener() {
         @Override
@@ -203,7 +199,7 @@ public class LogInActivity extends FragmentActivity {
     View.OnClickListener mTosClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //ToS URL is stored in the Config class
         }
     };
 
@@ -217,8 +213,8 @@ public class LogInActivity extends FragmentActivity {
                 mPreferencesEditor.apply();
                 UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
             }
-            //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
-            //haya logeado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
+            //There should be no situation where in spite of the response type being success the user has not logged in.
+            //If this happens for some strange reason, we let the user know that something went wrong.
             else {
                 UiHelper.showToast(mContext, getString(R.string.error_connection_unknown));
                 Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
@@ -231,13 +227,20 @@ public class LogInActivity extends FragmentActivity {
             unlockUi();
             mUser = (User) error.getBody();
             if (mUser == null) {
-                UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("101")) UiHelper.showToast(mContext, getString(R.string.login_wrong_credentials)); //Error 101: Usuario y/o contraseña invalidos
+            //Error 101: Invalid username and/or password
+            if (mUser.getCode().contains("101")) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.login_wrong_credentials));
+            }
         }
     };
 
-    // ** Fin de CLASES ANONIMAS **
+    // ** End of ANONYMOUS CLASSES **
 
 }

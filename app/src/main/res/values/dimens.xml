@@ -3,18 +3,18 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- Dimensiones acordes a los colores utilizados en las guidelines-->
-    <dimen name="guideline_rojo">8dp</dimen>
-    <dimen name="guideline_verde">24dp</dimen>
-    <dimen name="guideline_amarillo">48dp</dimen>
-    <dimen name="guideline_violeta">56dp</dimen>
-    <dimen name="guideline_verde_oscuro">88dp</dimen>
+    <!-- Guidelines dimens according to the design document -->
+    <dimen name="guideline_red">8dp</dimen>
+    <dimen name="guideline_green">24dp</dimen>
+    <dimen name="guideline_yellow">48dp</dimen>
+    <dimen name="guideline_purple">56dp</dimen>
+    <dimen name="guideline_dark_green">88dp</dimen>
 
-    <dimen name="guideline_boton">40dp</dimen>
+    <dimen name="guideline_button">40dp</dimen>
     <dimen name="guideline_editText">40dp</dimen>
     <dimen name="guideline_tab_text">10sp</dimen>
 
-    <!-- Dimensiones acordes a las fuentes utilizadas en las guidelines-->
+    <!-- Guidelines dimens for fonts according to the design document -->
     <dimen name="guideline_roboto_medium">155.56sp</dimen>
     <dimen name="guideline_roboto_regular_1">104.44sp</dimen>
     <dimen name="guideline_roboto_regular_2">97.78sp</dimen>

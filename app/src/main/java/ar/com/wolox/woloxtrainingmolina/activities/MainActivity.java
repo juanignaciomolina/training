@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
@@ -17,13 +18,13 @@ import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 
 public class MainActivity extends ActionBarActivity {
 
-    Toolbar mToolbar;
-    ViewPager mPager;
-    ViewPagerAdapter mAdapter;
-    SlidingTabLayout mTabs;
-    int mNumbOfTabs = 2;
-    CharSequence mTitles[] = new CharSequence[mNumbOfTabs];
-    int mImageResources[] = new int[mNumbOfTabs];
+    private Toolbar mToolbar;
+    private ViewPager mPager;
+    private ViewPagerAdapter mAdapter;
+    private SlidingTabLayout mTabs;
+    private int mNumbOfTabs = 2;
+    private CharSequence mTitles[] = new CharSequence[mNumbOfTabs];
+    private int mImageResources[] = new int[mNumbOfTabs];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private void initVars(){
+    private void initVars() {
         mTitles[0] = getString(R.string.fragment_news_name);
         mTitles[1] = getString(R.string.fragment_profile_name);
         mImageResources[0] = R.drawable.tab_news_img_selector;
@@ -52,34 +53,34 @@ public class MainActivity extends ActionBarActivity {
                 R.id.toolbar_logo,
                 R.drawable.topbarlogo);
 
-        //Si la version del OS es LOLLIPOP en adelante se usa elevation, sino se
-        //usa una elevation fake con una imagen con degrade. Hay que hacer esto
-        //porque los SlidingTabLayout no son compatibles con elevation pre lollipop
+        //If the OS version is LOLLIPOP or higher we use the elevation attribute,
+        //otherwise we use a fake elevation with a degrade image. We have to do this
+        //because the SlidingTabLayouts aren't compatible with elevation pre LOLLIPOP
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             findViewById(R.id.support_elevation).setVisibility(View.GONE);
-            mToolbar.setElevation(5);
-            mTabs.setElevation(5);
-        }
-        else {
+            mToolbar.setElevation(Config.UI_ELEVATION);
+            mTabs.setElevation(Config.UI_ELEVATION);
+        } else {
             getSupportActionBar().setElevation(0);
             findViewById(R.id.support_elevation).setVisibility(View.VISIBLE);
         }
 
     }
 
-    private void initTabs(){
+    private void initTabs() {
 
-        //Se crea el ViewPagerAdapter y se le pasa el fragmentManager, los titulos, imagenes de las tabs y la cantidad de tabs
+        //We instance a ViewPagerAdapater and provide it with a fragmentManager,
+        // tittles and images for the tabs and the total amount of tabs
         mAdapter =  new ViewPagerAdapter(getSupportFragmentManager(),mTitles, mNumbOfTabs, mImageResources);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
 
-        //Tabs con una custom view (tab.xml)
+        //Provide a custom view for the tabs (tab.xml)
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
         mTabs.setDistributeEvenly(true);
         mTabs.setCustomTabView(R.layout.tab, R.id.tab_tv, R.id.tab_img);
 
-        //Color custom para el scroll de tabs
+        //Custom color for the tabs scroll
         mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
@@ -87,7 +88,6 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        // Se le asigna el ViewPager al SlidingTabLayout
         mTabs.setViewPager(mPager);
     }
 

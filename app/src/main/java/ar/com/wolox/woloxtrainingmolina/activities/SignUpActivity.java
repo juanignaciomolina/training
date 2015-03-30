@@ -63,7 +63,6 @@ public class SignUpActivity extends ActionBarActivity {
         setListeners();
         initApiConnection();
         initFragments();
-
     }
 
     @Override
@@ -95,11 +94,11 @@ public class SignUpActivity extends ActionBarActivity {
 
     private void initPreferences() {
         mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        mPreferencesEditor = mPreferences.edit(); //Traemos un editor para las preferences
+        mPreferencesEditor = mPreferences.edit();
     }
 
     private void initApiConnection() {
-        //Preparamos una conexión a la API de Parse
+        //Get a connection to the Parsi API by requesting it to the app level class
         mSignUpService = TrainingApp.getRestAdapter().create(SignUpService.class);
     }
 
@@ -145,7 +144,7 @@ public class SignUpActivity extends ActionBarActivity {
         blockUi();
     }
 
-    // ** CLASES ANONIMAS **
+    // ** ANONYMOUS CLASSES **
 
     View.OnClickListener mJoinClickListener = new View.OnClickListener() {
         @Override
@@ -155,13 +154,13 @@ public class SignUpActivity extends ActionBarActivity {
             String password = mPassword.getText().toString();
             String confirmPassword = mConfirmPassword.getText().toString();
 
-            //Regla: Todos los campos son requeridos
+            //Rule: Every field is required
             if ( mail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ) {
                 UiHelper.showToast(mContext, getString(R.string.login_require_all));
                 return;
             }
 
-            //Regla: La dirección de email debe ser válida
+            //Rule: must be a valid email adress
             if (!InputCheckHelper.isValidEmail(mail)) {
                 mMail.setError(getString(R.string.login_not_valid_email));
                 return;
@@ -180,7 +179,7 @@ public class SignUpActivity extends ActionBarActivity {
     View.OnClickListener mTosClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //La URL de los ToS esta guardada en la clase Config
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Config.ToS_URL))); //Note: we use apply() instead of commit() because apply() works in the background
         }
     };
 
@@ -188,9 +187,9 @@ public class SignUpActivity extends ActionBarActivity {
         @Override
         public void success(User user, Response response) {
             unlockUi();
-            if (response.getStatus() == 201) { //Status 201: Usuario creado
-                //Nota: No se puede hacer this.mUser = user porque Parse no devuelve todos los atributos en el SignUp,
-                //algunos atributos quedarían incompletos
+            if (response.getStatus() == 201) { //Status 201: User created
+                //Note: We can't do this.mUser = user because Parse dosn't return every attribute during the SignUp,
+                //therefore some attributes would be missing.
                 mUser.setCreatedAt(user.getCreatedAt());
                 mUser.setObjectId(user.getObjectId());
                 mUser.setSessionToken(user.getSessionToken());
@@ -198,10 +197,10 @@ public class SignUpActivity extends ActionBarActivity {
                 mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.getPassword());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                UiHelper.showToast(mContext, "User created"); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, getString(R.string.signup_user_created)); //TODO En lugar de mostrar el mensaje abrir la activity principal
             }
-            //No debería haber ninguna situación en que la response sea del tipo success y aún así no se
-            //haya creado el usuario. Si llegase a suceder esto por algún motivo extraño, se le avisa al usuario
+            //There should be no situation where in spite of the response type being success the user has not been created.
+            //If this happens for some strange reason, we let the user know that something went wrong.
             else {
                 UiHelper.showToast(mContext, getString(R.string.error_connection_unknown));
                 Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
@@ -218,10 +217,15 @@ public class SignUpActivity extends ActionBarActivity {
                 UiHelper.showToast(mContext, getString(R.string.login_unable_to_connect));
                 return;
             }
-            if (mUser.getCode().contains("202")) UiHelper.showToast(mContext, getString(R.string.signup_invalid_username)); //Error 202: El usuario ya existe
+            //Error 202: El usuario ya existe
+            if (mUser.getCode().contains("202")) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.signup_invalid_username));
+            }
         }
     };
 
-    // ** Fin de CLASES ANONIMAS **
+    // ** End of ANONYMOUS CLASSES **
 
 }

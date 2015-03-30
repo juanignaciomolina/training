@@ -9,48 +9,45 @@ import ar.com.wolox.woloxtrainingmolina.fragments.ProfileFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    CharSequence mTitles[];
-    int mNumbOfTabs;
-    int mImgResources[];
+    private CharSequence mTitles[];
+    private int mNumbOfTabs;
+    private int mImgResources[];
 
-
-    // Constructor del adapter con los atributos necesarios
-    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb, int mImgResources[]) {
+    // Adapter's constructor with the necessary attributes
+    public ViewPagerAdapter(FragmentManager fm,
+                            CharSequence mTitles[],
+                            int mNumbOfTabs,
+                            int mImgResources[]) {
         super(fm);
 
         this.mTitles = mTitles;
-        this.mNumbOfTabs = mNumbOfTabsumb;
+        this.mNumbOfTabs = mNumbOfTabs;
         this.mImgResources = mImgResources;
-
     }
 
-    //Retornamos el fragment correspondiente a la tab que se esta viendo
+    //Return the fragment that corresponds to the select tab
     @Override
     public Fragment getItem(int position) {
 
-        if(position == 0) // position == 0: la tab de la izquierda
-        {
+        // position == 0: left tab
+        if(position == 0) {
             NewsFragment newsFragment = new NewsFragment();
             return newsFragment;
-        }
-        // position != 0: la tab de la derecha (se podría cambiar esto para permitir más
-        // tabs si llega a ser necesario)
-        else
-        {
+        } else {
+        // position != 0: right tab (this could be changed to allow more tabs
+        // if necessary)
             ProfileFragment profileFragment = new ProfileFragment();
             return profileFragment;
         }
-
-
     }
 
-    //Devolvemos el titulo o imagen de la tab correspondiente
+    //Return the title or image according to the select tab
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitles[position];
     }
 
-    //Este método no lleva @Override porque es una customizacion, no se hereda
+    //This method isn't an @Override because it's a customization, it's not inherited
     public int getPageImage(int position) {
         return mImgResources[position];
     }

@@ -219,7 +219,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
-            tabImageView.setImageResource(adapter.getPageImage(i)); //Hackeado para que las tabs admitan imágenes dinámicass
+            tabImageView.setImageResource(adapter.getPageImage(i)); //Hacked to allow dynamic images on tabs
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {
@@ -231,7 +231,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabView.setSelected(true);
             }
 
-            //Customizado para cambiar el color de la tab cuando es seleccionada
+            //Customized to change the tab's title color if it is selected.
             tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_text_selector));
             //tabTitleView.setTextSize(14);
         }

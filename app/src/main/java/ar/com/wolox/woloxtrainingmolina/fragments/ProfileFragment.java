@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import ar.com.wolox.woloxtrainingmolina.R;
 
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

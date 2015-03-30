@@ -14,6 +14,4 @@
 
     <solid
     android:color="@color/btn_blue" />
-
-
 </shape>

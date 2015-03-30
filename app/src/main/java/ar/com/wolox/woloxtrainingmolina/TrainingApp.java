@@ -10,7 +10,7 @@ public class TrainingApp extends Application {
     private static ParseAPIHelper sParseAPIHelper;
     private static RestAdapter sRestAdapter;
 
-    //La instancia del ParseAPIHelper se crea on-demand si ya no había sido creada
+    //The ParseAPIHelper instance is created on-demand if it hasn't been instantiated before
     public static ParseAPIHelper getParseApiHelper() {
         if (sParseAPIHelper == null) {
             setParseApiHelper(new ParseAPIHelper());
@@ -23,7 +23,7 @@ public class TrainingApp extends Application {
         TrainingApp.sParseAPIHelper = sParseApiHelper;
     }
 
-    //La instancia del RestAdapter se crea on-demand si ya no había sido creada
+    //The RestAdapter instance is created on-demand if it hasn't been instantiated before
     public static RestAdapter getRestAdapter() {
         if (sRestAdapter == null) {
             setRestAdapter(getParseApiHelper().getRestAdapter());
