@@ -16,9 +16,12 @@ import android.widget.LinearLayout;
 import com.melnykov.fab.FloatingActionButton;
 
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.activities.MainActivity;
 import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
+import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
+import de.greenrobot.event.EventBus;
 
 public class NewsFragment extends Fragment {
 
@@ -28,6 +31,8 @@ public class NewsFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFab;
     private LinearLayout mNoNewsHolder;
+
+    private User mUser;
 
     private RowNews mItemNews[] = {};
 
@@ -45,7 +50,18 @@ public class NewsFragment extends Fragment {
 
         initVars();
         initUi();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     private void initVars() {
@@ -107,6 +123,14 @@ public class NewsFragment extends Fragment {
         // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
+    // ** EVENT BUS **
+
+    public void onEvent(MainActivity.LogInEvent event){
+        this.mUser = event.mUser;
+    }
+
+    // ** End of EVENT BUS **
 
     // ** ANONYMOUS CLASSES **
 

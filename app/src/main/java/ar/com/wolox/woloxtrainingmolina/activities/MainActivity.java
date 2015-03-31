@@ -20,6 +20,7 @@ import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -60,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
         initTabs();
         initUi();
 
-        checkLogInMethod();
+        tryLogIn();
     }
 
     private void initFragments() {
@@ -134,7 +135,7 @@ public class MainActivity extends ActionBarActivity {
         mConnectingDialogInstance.dismiss();
     }
 
-    private void checkLogInMethod() {
+    private void tryLogIn() {
         //Get the stored values of the email, password and session (in case they exist)
         mEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
         mPassword = mPreferences.getString(Config.LOGIN_PASSWORD_KEY, null);
@@ -159,6 +160,18 @@ public class MainActivity extends ActionBarActivity {
         mLogInSessionService.sessionLogIn(mLogInSessionCallback);
     }
 
+    // ** EVENT BUS **
+
+    public class LogInEvent {
+        public final User mUser;
+
+        public LogInEvent(User user) {
+            this.mUser = user;
+        }
+    }
+
+    // ** End of EVENT BUS **
+
     // ** ANONYMOUS CLASSES **
 
     Callback<User> mLogInSessionCallback = new Callback<User>() {
@@ -166,7 +179,9 @@ public class MainActivity extends ActionBarActivity {
         public void success(User user, Response response) {
             unlockUi();
             if (response.getStatus() == 200) { //Status 200: Log in OK
-                UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO keep user logged in
+                //TODO execute fragments logic
+                UiHelper.showToast(mContext, getString(R.string.login_welcome));
+                EventBus.getDefault().post(new LogInEvent(user));
             }
             //There should be no situation where in spite of the response type being success the user has not logged in.
             //If this happens for some strange reason, we let the user know that something went wrong.
@@ -179,6 +194,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void failure(RetrofitError error) {
+            unlockUi();
             Log.e(Config.LOG_ERROR, error.getMessage());
             mUser = (User) error.getBody();
             if (mUser == null) {
