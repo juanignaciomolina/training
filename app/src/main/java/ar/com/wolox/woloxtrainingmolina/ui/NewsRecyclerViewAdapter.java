@@ -9,15 +9,15 @@ import android.widget.ImageView;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
-import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
+import ar.com.wolox.woloxtrainingmolina.entities.News;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHolder> {
 
-    private RowNews[] mItemsNews;
+    private News[] mItemsNews;
 
     private NewsRowViewHolder mNewsRowViewHolder;
 
-    public NewsRecyclerViewAdapter(RowNews[] itemsNews) {
+    public NewsRecyclerViewAdapter(News[] itemsNews) {
         this.mItemsNews = itemsNews;
     }
 
@@ -49,11 +49,11 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     @Override
     public void onBindViewHolder(NewsRowViewHolder viewHolder, int position) {
         viewHolder.mTitle.setText(mItemsNews[position].getTitle());
-        viewHolder.mContent.setText(mItemsNews[position].getContent());
-        viewHolder.mImage.setImageResource(mItemsNews[position].getImageUrl());
-        if (mItemsNews[position].getLike()) viewHolder.mLike.setImageResource(R.drawable.likeon);
+        viewHolder.mContent.setText(mItemsNews[position].getText());
+        viewHolder.mImage.setImageResource(R.drawable.item_news_placeholder); //todo desharcodear esto
+        if (true) viewHolder.mLike.setImageResource(R.drawable.likeon); //todo desharcodear esto
         else viewHolder.mLike.setImageResource(R.drawable.likeoff);
-        viewHolder.mDate.setText(mItemsNews[position].getDate());
+        viewHolder.mDate.setText("15m");//todo desharcodear esto
     }
 
     // Return the size of your mItemsNews (invoked by the layout manager)

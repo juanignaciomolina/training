@@ -42,10 +42,12 @@ public class NewsFragment extends Fragment {
     private LinearLayout mNoNewsHolder;
     private ProgressBar mProgressBar;
 
+    private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
+
     private User mUser;
 
     private RowNews mItemNews[] = {};
-    private News mNews[];
+    private News mNews[] = {};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +61,6 @@ public class NewsFragment extends Fragment {
 
         mActivity = getActivity();
 
-        //initVars();
         initUi();
         initApiConnection();
 
@@ -78,25 +79,6 @@ public class NewsFragment extends Fragment {
         super.onStop();
     }
 
-    private void initVars() {
-        //todo dummy data for testing
-        RowNews itemsNews[] = {
-                new RowNews("Nicola Dille", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "15m"),
-                new RowNews("Carmelina Teston", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "18m"),
-                new RowNews("Sanford Hamrick", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "32m"),
-                new RowNews("Jina Hersom", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "42m"),
-                new RowNews("Brendan Nemeth", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "9m"),
-                new RowNews("Stanton Riggenbach", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "17m"),
-                new RowNews("Shaunna Drozd", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "14m"),
-                new RowNews("Thresa Lashley", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "29m"),
-                new RowNews("Shante Evensen", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "35m"),
-                new RowNews("Jesus Sera", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "52m"),
-                new RowNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
-                new RowNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
-
-        mItemNews = itemsNews;
-    }
-
     private void initUi() {
         mRecyclerView = (RecyclerView) mActivity.findViewById(R.id.recycler_view_news);
         mFab = (FloatingActionButton) mActivity.findViewById(R.id.fab);
@@ -105,8 +87,8 @@ public class NewsFragment extends Fragment {
         mProgressBar = (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(mItemNews);
-        mRecyclerView.setAdapter(mAdapter);
+        mNewsRecyclerViewAdapter= new NewsRecyclerViewAdapter(mNews);
+        mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
         // todo customize animations extending RecyclerView.ItemAnimator class
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -124,7 +106,7 @@ public class NewsFragment extends Fragment {
         mProgressBar.setVisibility(View.GONE);
         mFab.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-        if (mItemNews != null && mItemNews.length > 0) displayNoNews(false);
+        if (mNews != null && mNews.length > 0) displayNoNews(false);
         else displayNoNews(true);
     }
 
@@ -192,7 +174,8 @@ public class NewsFragment extends Fragment {
         @Override
         public void success(NewsRequestAdapter newsRequestAdapter, Response response) {
             mNews = newsRequestAdapter.getResults();
-            UiHelper.showToast(mActivity, mNews[0].getUserId());
+            populateUi();
+            mNewsRecyclerViewAdapter.notifyDataSetChanged();
         }
 
         @Override
