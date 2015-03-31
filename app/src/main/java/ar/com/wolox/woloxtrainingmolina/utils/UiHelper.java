@@ -2,16 +2,14 @@ package ar.com.wolox.woloxtrainingmolina.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
-import android.support.v7.widget.Toolbar;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.EditText;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
-import ar.com.wolox.woloxtrainingmolina.R;
 
 public class UiHelper {
 
@@ -37,6 +35,14 @@ public class UiHelper {
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void startActivityClearStack(Context localContext,
+                                               Class<? extends Activity> targetActivity) {
+        localContext.startActivity(
+                new Intent(localContext, targetActivity).
+                        setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
     }
 
 }

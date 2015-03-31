@@ -4,23 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.SignUpService;
-import ar.com.wolox.woloxtrainingmolina.entities.*;
+import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.utils.InputCheckHelper;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
@@ -197,7 +195,8 @@ public class SignUpActivity extends ActionBarActivity {
                 mPreferencesEditor.putString(Config.LOGIN_PASSWORD_KEY, mUser.getPassword());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                UiHelper.showToast(mContext, getString(R.string.signup_user_created)); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, getString(R.string.signup_user_created));
+                UiHelper.startActivityClearStack(mContext, MainActivity.class);
             }
             //There should be no situation where in spite of the response type being success the user has not been created.
             //If this happens for some strange reason, we let the user know that something went wrong.

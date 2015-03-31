@@ -1,22 +1,34 @@
 package ar.com.wolox.woloxtrainingmolina.activities;
 
-import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.TrainingApp;
+import ar.com.wolox.woloxtrainingmolina.api.LogInSessionService;
+import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends ActionBarActivity {
+
+    private Context mContext;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
+    private LogInSessionService mLogInSessionService;
 
     private Toolbar mToolbar;
     private ViewPager mPager;
@@ -26,15 +38,24 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mTitles[] = new CharSequence[mNumbOfTabs];
     private int mImageResources[] = new int[mNumbOfTabs];
 
+    private User mUser;
+    private String mEmail;
+    private String mPassword;
+    private String mSessionToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
+
+        initPreferences();
         initVars();
         initTabs();
         initUi();
 
+        checkLogInMethod();
     }
 
     private void initVars() {
@@ -90,5 +111,80 @@ public class MainActivity extends ActionBarActivity {
 
         mTabs.setViewPager(mPager);
     }
+
+    private void initPreferences() {
+        mPreferences = mContext.getSharedPreferences(Config.LOGIN_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        mPreferencesEditor = mPreferences.edit();
+    }
+
+    private void startLogInActivity() {
+        startActivity(
+            new Intent(mContext, LogInActivity.class).
+                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
+    }
+
+    private void checkLogInMethod() {
+        //Get the stored values of the email, password and session (in case they exist)
+        mEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
+        mPassword = mPreferences.getString(Config.LOGIN_PASSWORD_KEY, null);
+        mSessionToken = mPreferences.getString(Config.LOGIN_SESSION_KEY, null);
+        if (mEmail == null || mPassword == null || mSessionToken == null)
+            UiHelper.startActivityClearStack(mContext, LogInActivity.class);
+        else
+            doLogIn();
+    }
+
+    private void initSessionApiConnection() {
+        //Get a connection to the Parse API (with a user session token)
+        //by requesting it to the app level class
+        TrainingApp.getParseApiHelper().setSessionToken(mSessionToken);
+        TrainingApp.setRestAdapter(null); //This forces the TrainingApp class to get a new Adapter
+        mLogInSessionService = TrainingApp.getRestAdapter().create(LogInSessionService.class);
+    }
+
+    private void doLogIn() {
+        initSessionApiConnection();
+        mLogInSessionService.sessionLogIn(mLogInSessionCallback);
+    }
+
+    // ** ANONYMOUS CLASSES **
+
+    Callback<User> mLogInSessionCallback = new Callback<User>() {
+        @Override
+        public void success(User user, Response response) {
+            if (response.getStatus() == 200) { //Status 200: Log in OK
+                UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO keep user logged in
+            }
+            //There should be no situation where in spite of the response type being success the user has not logged in.
+            //If this happens for some strange reason, we let the user know that something went wrong.
+            else {
+                UiHelper.showToast(mContext, getString(R.string.error_connection_unknown));
+                Log.e(Config.LOG_ERROR, "Unknown connection response: " + response.getStatus());
+                UiHelper.startActivityClearStack(mContext, LogInActivity.class);
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(Config.LOG_ERROR, error.getMessage());
+            mUser = (User) error.getBody();
+            if (mUser == null) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.login_unable_to_connect));
+                return;
+            }
+            //Error 209: Invalid session token
+            if (mUser.getCode().contains("209")) {
+                UiHelper.showToast(
+                        mContext,
+                        getString(R.string.main_activity_session_expired));
+                UiHelper.startActivityClearStack(mContext, LogInActivity.class);
+            }
+        }
+    };
+
+    // ** End of ANONYMOUS CLASSES **
 
 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
@@ -211,7 +210,8 @@ public class LogInActivity extends FragmentActivity {
                 mUser.setSessionToken(user.getSessionToken());
                 mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, mUser.getSessionToken());
                 mPreferencesEditor.apply();
-                UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO En lugar de mostrar el mensaje abrir la activity principal
+                UiHelper.showToast(mContext, getString(R.string.login_welcome));
+                UiHelper.startActivityClearStack(mContext, MainActivity.class);
             }
             //There should be no situation where in spite of the response type being success the user has not logged in.
             //If this happens for some strange reason, we let the user know that something went wrong.
