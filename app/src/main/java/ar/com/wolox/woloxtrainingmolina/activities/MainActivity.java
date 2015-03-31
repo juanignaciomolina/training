@@ -1,10 +1,10 @@
 package ar.com.wolox.woloxtrainingmolina.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +16,7 @@ import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.LogInSessionService;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
+import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
@@ -43,6 +44,9 @@ public class MainActivity extends ActionBarActivity {
     private String mPassword;
     private String mSessionToken;
 
+    private FragmentManager mFragmentManager;
+    private ConnectingDialog mConnectingDialogInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +55,17 @@ public class MainActivity extends ActionBarActivity {
         mContext = this;
 
         initPreferences();
+        initFragments();
         initVars();
         initTabs();
         initUi();
 
         checkLogInMethod();
+    }
+
+    private void initFragments() {
+        mFragmentManager = getSupportFragmentManager();
+        mConnectingDialogInstance = new ConnectingDialog();
     }
 
     private void initVars() {
@@ -89,10 +99,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void initTabs() {
-
         //We instance a ViewPagerAdapater and provide it with a fragmentManager,
         // tittles and images for the tabs and the total amount of tabs
-        mAdapter =  new ViewPagerAdapter(getSupportFragmentManager(),mTitles, mNumbOfTabs, mImageResources);
+        mAdapter =  new ViewPagerAdapter(mFragmentManager,mTitles, mNumbOfTabs, mImageResources);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
 
@@ -117,11 +126,12 @@ public class MainActivity extends ActionBarActivity {
         mPreferencesEditor = mPreferences.edit();
     }
 
-    private void startLogInActivity() {
-        startActivity(
-            new Intent(mContext, LogInActivity.class).
-                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        );
+    private void lockUi() {
+        mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
+    }
+
+    private void unlockUi() {
+        mConnectingDialogInstance.dismiss();
     }
 
     private void checkLogInMethod() {
@@ -145,6 +155,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void doLogIn() {
         initSessionApiConnection();
+        lockUi();
         mLogInSessionService.sessionLogIn(mLogInSessionCallback);
     }
 
@@ -153,6 +164,7 @@ public class MainActivity extends ActionBarActivity {
     Callback<User> mLogInSessionCallback = new Callback<User>() {
         @Override
         public void success(User user, Response response) {
+            unlockUi();
             if (response.getStatus() == 200) { //Status 200: Log in OK
                 UiHelper.showToast(mContext, getString(R.string.login_welcome)); //TODO keep user logged in
             }
