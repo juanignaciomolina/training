@@ -17,16 +17,24 @@ import android.widget.ProgressBar;
 import com.melnykov.fab.FloatingActionButton;
 
 import ar.com.wolox.woloxtrainingmolina.R;
+import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.activities.MainActivity;
+import ar.com.wolox.woloxtrainingmolina.api.NewsService;
+import ar.com.wolox.woloxtrainingmolina.entities.News;
+import ar.com.wolox.woloxtrainingmolina.api.NewsRequestAdapter;
 import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class NewsFragment extends Fragment {
 
     private Activity mActivity;
+    private NewsService mNewsService;
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -37,6 +45,7 @@ public class NewsFragment extends Fragment {
     private User mUser;
 
     private RowNews mItemNews[] = {};
+    private News mNews[];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,8 +59,9 @@ public class NewsFragment extends Fragment {
 
         mActivity = getActivity();
 
-        initVars();
+        //initVars();
         initUi();
+        initApiConnection();
 
         setLoadingUi();
     }
@@ -106,14 +116,16 @@ public class NewsFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(mSwipeRefreshListener);
     }
 
+    private void initApiConnection() {
+        mNewsService = TrainingApp.getRestAdapter().create(NewsService.class);
+    }
+
     private void populateUi() {
         mProgressBar.setVisibility(View.GONE);
         mFab.setVisibility(View.VISIBLE);
-        if (mItemNews != null && mItemNews.length > 0) {
-            displayNoNews(false);
-            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-        } else
-            displayNoNews(true);
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        if (mItemNews != null && mItemNews.length > 0) displayNoNews(false);
+        else displayNoNews(true);
     }
 
     private void displayNoNews(boolean state) {
@@ -126,6 +138,10 @@ public class NewsFragment extends Fragment {
         mFab.setVisibility(View.GONE);
         displayNoNews(false);
         mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void doGetNews() {
+        mNewsService.getNews(0, 5, mGetNewsCallback);
     }
 
     private void refreshItems() {
@@ -149,6 +165,7 @@ public class NewsFragment extends Fragment {
     public void onEvent(MainActivity.LogInEvent event){
         this.mUser = event.mUser;
         populateUi();
+        doGetNews();
     }
 
     // ** End of EVENT BUS **
@@ -167,6 +184,20 @@ public class NewsFragment extends Fragment {
         public void onRefresh() {
             // Refresh items
             refreshItems();
+        }
+    };
+
+    Callback<NewsRequestAdapter> mGetNewsCallback = new Callback<NewsRequestAdapter>() {
+
+        @Override
+        public void success(NewsRequestAdapter newsRequestAdapter, Response response) {
+            mNews = newsRequestAdapter.getResults();
+            UiHelper.showToast(mActivity, mNews[0].getUserId());
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            UiHelper.showToast(mActivity, error.getMessage());
         }
     };
 

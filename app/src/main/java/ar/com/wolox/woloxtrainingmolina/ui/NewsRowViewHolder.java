@@ -5,13 +5,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
+
 import ar.com.wolox.woloxtrainingmolina.R;
 
 public class NewsRowViewHolder extends RecyclerView.ViewHolder {
 
     public TextView mTitle;
     public TextView mContent;
-    public ImageView mImage;
+    public RoundedImageView mImage;
     public ImageView mLike;
     public TextView mDate;
 
@@ -21,7 +23,7 @@ public class NewsRowViewHolder extends RecyclerView.ViewHolder {
         super(itemLayoutView);
         this.mTitle = (TextView) itemLayoutView.findViewById(R.id.item_title);
         this.mContent = (TextView) itemLayoutView.findViewById(R.id.item_content);
-        this.mImage = (ImageView) itemLayoutView.findViewById(R.id.item_image);
+        this.mImage = (RoundedImageView) itemLayoutView.findViewById(R.id.item_image);
         this.mLike = (ImageView) itemLayoutView.findViewById(R.id.item_like);
         this.mDate = (TextView) itemLayoutView.findViewById(R.id.item_date);
 
