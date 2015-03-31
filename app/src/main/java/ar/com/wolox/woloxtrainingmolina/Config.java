@@ -16,6 +16,7 @@ public class Config {
     public static final String PARSE_LOGIN = "/login";
     public static final String PARSE_USERS = "/users";
     public static final String PARSE_ME = PARSE_USERS + "/me";
+    public static final String PARSE_NEWS = "/classes/news";
 
     //SharedPreferences
     public static final String LOGIN_PREFERENCES_KEY = "Login_preferences";
