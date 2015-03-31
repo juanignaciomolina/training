@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -31,6 +32,7 @@ public class NewsFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFab;
     private LinearLayout mNoNewsHolder;
+    private ProgressBar mProgressBar;
 
     private User mUser;
 
@@ -50,6 +52,8 @@ public class NewsFragment extends Fragment {
 
         initVars();
         initUi();
+
+        setLoadingUi();
     }
 
     @Override
@@ -88,6 +92,7 @@ public class NewsFragment extends Fragment {
         mFab = (FloatingActionButton) mActivity.findViewById(R.id.fab);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mActivity.findViewById(R.id.swipe_refresh_layout);
         mNoNewsHolder = (LinearLayout) mActivity.findViewById(R.id.no_news_holder);
+        mProgressBar = (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         NewsRecyclerViewAdapter mAdapter = new NewsRecyclerViewAdapter(mItemNews);
@@ -99,13 +104,28 @@ public class NewsFragment extends Fragment {
         mFab.setOnClickListener(mFabClickListener);
 
         mSwipeRefreshLayout.setOnRefreshListener(mSwipeRefreshListener);
+    }
 
-        if (mItemNews != null && mItemNews.length > 0) displayNoNews(false);
+    private void populateUi() {
+        mProgressBar.setVisibility(View.GONE);
+        mFab.setVisibility(View.VISIBLE);
+        if (mItemNews != null && mItemNews.length > 0) {
+            displayNoNews(false);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        } else
+            displayNoNews(true);
     }
 
     private void displayNoNews(boolean state) {
         if (state) mNoNewsHolder.setVisibility(View.VISIBLE);
         else mNoNewsHolder.setVisibility(View.GONE);
+    }
+
+    private void setLoadingUi() {
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mFab.setVisibility(View.GONE);
+        displayNoNews(false);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void refreshItems() {
@@ -128,6 +148,7 @@ public class NewsFragment extends Fragment {
 
     public void onEvent(MainActivity.LogInEvent event){
         this.mUser = event.mUser;
+        populateUi();
     }
 
     // ** End of EVENT BUS **

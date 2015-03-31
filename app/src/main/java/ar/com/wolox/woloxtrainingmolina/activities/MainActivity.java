@@ -16,7 +16,6 @@ import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.api.LogInSessionService;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
-import ar.com.wolox.woloxtrainingmolina.ui.ConnectingDialog;
 import ar.com.wolox.woloxtrainingmolina.ui.ViewPagerAdapter;
 import ar.com.wolox.woloxtrainingmolina.ui.widget.SlidingTabLayout;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
@@ -46,7 +45,6 @@ public class MainActivity extends ActionBarActivity {
     private String mSessionToken;
 
     private FragmentManager mFragmentManager;
-    private ConnectingDialog mConnectingDialogInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
-        mConnectingDialogInstance = new ConnectingDialog();
     }
 
     private void initVars() {
@@ -127,14 +124,6 @@ public class MainActivity extends ActionBarActivity {
         mPreferencesEditor = mPreferences.edit();
     }
 
-    private void lockUi() {
-        mConnectingDialogInstance.show(mFragmentManager, "Spinner_fragment_tag");
-    }
-
-    private void unlockUi() {
-        mConnectingDialogInstance.dismiss();
-    }
-
     private void tryLogIn() {
         //Get the stored values of the email, password and session (in case they exist)
         mEmail = mPreferences.getString(Config.LOGIN_EMAIL_KEY, null);
@@ -156,7 +145,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void doLogIn() {
         initSessionApiConnection();
-        lockUi();
         mLogInSessionService.sessionLogIn(mLogInSessionCallback);
     }
 
@@ -177,7 +165,6 @@ public class MainActivity extends ActionBarActivity {
     Callback<User> mLogInSessionCallback = new Callback<User>() {
         @Override
         public void success(User user, Response response) {
-            unlockUi();
             if (response.getStatus() == 200) { //Status 200: Log in OK
                 //TODO execute fragments logic
                 UiHelper.showToast(mContext, getString(R.string.login_welcome));
@@ -194,7 +181,6 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void failure(RetrofitError error) {
-            unlockUi();
             Log.e(Config.LOG_ERROR, error.getMessage());
             mUser = (User) error.getBody();
             if (mUser == null) {
@@ -208,6 +194,7 @@ public class MainActivity extends ActionBarActivity {
                 UiHelper.showToast(
                         mContext,
                         getString(R.string.main_activity_session_expired));
+                mPreferencesEditor.putString(Config.LOGIN_SESSION_KEY, null); //Clear preferences token
                 UiHelper.startActivityClearStack(mContext, LogInActivity.class);
             }
         }
