@@ -1,6 +1,6 @@
 package ar.com.wolox.woloxtrainingmolina.entities;
 
-public class ItemNews {
+public class RowNews {
 
     private String title;
     private String content;
@@ -8,7 +8,7 @@ public class ItemNews {
     private boolean like;
     private String date;
 
-    public ItemNews (String title, String content, int imageUrl, boolean like, String date) {
+    public RowNews(String title, String content, int imageUrl, boolean like, String date) {
 
         this.title = title;
         this.content = content;

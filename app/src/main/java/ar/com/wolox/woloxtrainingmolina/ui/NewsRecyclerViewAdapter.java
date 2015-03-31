@@ -9,15 +9,15 @@ import android.widget.ImageView;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
-import ar.com.wolox.woloxtrainingmolina.entities.ItemNews;
+import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHolder> {
 
-    private ItemNews[] mItemsNews;
+    private RowNews[] mItemsNews;
 
     private NewsRowViewHolder mNewsRowViewHolder;
 
-    public NewsRecyclerViewAdapter(ItemNews[] itemsNews) {
+    public NewsRecyclerViewAdapter(RowNews[] itemsNews) {
         this.mItemsNews = itemsNews;
     }
 

@@ -1,8 +1,6 @@
 package ar.com.wolox.woloxtrainingmolina.fragments;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,8 +16,7 @@ import android.widget.LinearLayout;
 import com.melnykov.fab.FloatingActionButton;
 
 import ar.com.wolox.woloxtrainingmolina.R;
-import ar.com.wolox.woloxtrainingmolina.activities.SignUpActivity;
-import ar.com.wolox.woloxtrainingmolina.entities.ItemNews;
+import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
 
@@ -32,7 +29,7 @@ public class NewsFragment extends Fragment {
     private FloatingActionButton mFab;
     private LinearLayout mNoNewsHolder;
 
-    private ItemNews mItemNews[] = {};
+    private RowNews mItemNews[] = {};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,19 +50,19 @@ public class NewsFragment extends Fragment {
 
     private void initVars() {
         //todo dummy data for testing
-        ItemNews itemsNews[] = {
-                new ItemNews("Nicola Dille", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "15m"),
-                new ItemNews("Carmelina Teston", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "18m"),
-                new ItemNews("Sanford Hamrick", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "32m"),
-                new ItemNews("Jina Hersom", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "42m"),
-                new ItemNews("Brendan Nemeth", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "9m"),
-                new ItemNews("Stanton Riggenbach", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "17m"),
-                new ItemNews("Shaunna Drozd", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "14m"),
-                new ItemNews("Thresa Lashley", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "29m"),
-                new ItemNews("Shante Evensen", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "35m"),
-                new ItemNews("Jesus Sera", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "52m"),
-                new ItemNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
-                new ItemNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
+        RowNews itemsNews[] = {
+                new RowNews("Nicola Dille", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "15m"),
+                new RowNews("Carmelina Teston", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "18m"),
+                new RowNews("Sanford Hamrick", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "32m"),
+                new RowNews("Jina Hersom", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "42m"),
+                new RowNews("Brendan Nemeth", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "9m"),
+                new RowNews("Stanton Riggenbach", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "17m"),
+                new RowNews("Shaunna Drozd", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "14m"),
+                new RowNews("Thresa Lashley", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "29m"),
+                new RowNews("Shante Evensen", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "35m"),
+                new RowNews("Jesus Sera", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "52m"),
+                new RowNews("Kathryn Seawright", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, true, "7m"),
+                new RowNews("Jacquline Rochelle", "I'll be in your neighborhood doing errands...", R.drawable.item_news_placeholder, false, "22m")};
 
         mItemNews = itemsNews;
     }
