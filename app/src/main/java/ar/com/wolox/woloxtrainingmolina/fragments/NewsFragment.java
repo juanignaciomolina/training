@@ -16,12 +16,15 @@ import android.widget.ProgressBar;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.activities.MainActivity;
+import ar.com.wolox.woloxtrainingmolina.api.NewsRequestAdapter;
 import ar.com.wolox.woloxtrainingmolina.api.NewsService;
 import ar.com.wolox.woloxtrainingmolina.entities.News;
-import ar.com.wolox.woloxtrainingmolina.api.NewsRequestAdapter;
 import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
@@ -47,7 +50,8 @@ public class NewsFragment extends Fragment {
     private User mUser;
 
     private RowNews mItemNews[] = {};
-    private News mNews[] = {};
+    //private News mNews[] = {};
+    private List<News> mNews = new ArrayList<News>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,7 +110,7 @@ public class NewsFragment extends Fragment {
         mProgressBar.setVisibility(View.GONE);
         mFab.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-        if (mNews != null && mNews.length > 0) displayNoNews(false);
+        if (mNews != null && mNews.size() > 0) displayNoNews(false);
         else displayNoNews(true);
     }
 
@@ -142,6 +146,13 @@ public class NewsFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    //
+    private void addNewsIterator(News[] from, List to) {
+        for( News news : from) {
+            to.add(news);
+        }
+    }
+
     // ** EVENT BUS **
 
     public void onEvent(MainActivity.LogInEvent event){
@@ -173,7 +184,9 @@ public class NewsFragment extends Fragment {
 
         @Override
         public void success(NewsRequestAdapter newsRequestAdapter, Response response) {
-            mNews = newsRequestAdapter.getResults();
+            mNews.clear();
+            addNewsIterator(newsRequestAdapter.getResults(), mNews);
+            //mNews = newsRequestAdapter.getResults();
             populateUi();
             mNewsRecyclerViewAdapter.notifyDataSetChanged();
         }
