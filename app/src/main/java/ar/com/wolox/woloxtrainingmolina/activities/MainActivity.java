@@ -158,6 +158,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public class NoInternetEvent {    }
+
     // ** End of EVENT BUS **
 
     // ** ANONYMOUS CLASSES **
@@ -187,6 +189,7 @@ public class MainActivity extends ActionBarActivity {
                 UiHelper.showToast(
                         mContext,
                         getString(R.string.login_unable_to_connect));
+                EventBus.getDefault().post(new NoInternetEvent());
                 return;
             }
             //Error 209: Invalid session token

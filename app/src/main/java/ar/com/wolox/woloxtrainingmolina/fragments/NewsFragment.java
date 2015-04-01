@@ -42,6 +42,7 @@ public class NewsFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFab;
     private LinearLayout mNoNewsHolder;
+    private LinearLayout mNoInternetHolder;
     private ProgressBar mProgressBar;
 
     private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
@@ -83,6 +84,7 @@ public class NewsFragment extends Fragment {
         mFab = (FloatingActionButton) mActivity.findViewById(R.id.fab);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mActivity.findViewById(R.id.swipe_refresh_layout);
         mNoNewsHolder = (LinearLayout) mActivity.findViewById(R.id.no_news_holder);
+        mNoInternetHolder = (LinearLayout) mActivity.findViewById(R.id.no_internet_holder);
         mProgressBar = (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -114,6 +116,14 @@ public class NewsFragment extends Fragment {
     private void displayNoNews(boolean state) {
         if (state) mNoNewsHolder.setVisibility(View.VISIBLE);
         else mNoNewsHolder.setVisibility(View.GONE);
+    }
+
+    private void displayNoInternet(boolean state) {
+        if (state) {
+            mNoInternetHolder.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+        }
+        else mNoInternetHolder.setVisibility(View.GONE);
     }
 
     private void setLoadingUi() {
@@ -155,6 +165,11 @@ public class NewsFragment extends Fragment {
     public void onEvent(MainActivity.LogInEvent event){
         this.mUser = event.mUser;
         doGetNews();
+    }
+
+    public void onEvent(MainActivity.NoInternetEvent event){
+        displayNoNews(false);
+        displayNoInternet(true);
     }
 
     // ** End of EVENT BUS **
