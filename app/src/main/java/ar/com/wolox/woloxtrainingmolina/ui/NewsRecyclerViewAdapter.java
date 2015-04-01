@@ -7,17 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.entities.News;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHolder> {
 
-    private News[] mItemsNews;
+    private List<News> mItemsNews = new ArrayList<News>();
 
     private NewsRowViewHolder mNewsRowViewHolder;
 
-    public NewsRecyclerViewAdapter(News[] itemsNews) {
+    public NewsRecyclerViewAdapter(List<News> itemsNews) {
         this.mItemsNews = itemsNews;
     }
 
@@ -48,8 +51,8 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(NewsRowViewHolder viewHolder, int position) {
-        viewHolder.mTitle.setText(mItemsNews[position].getTitle());
-        viewHolder.mContent.setText(mItemsNews[position].getText());
+        viewHolder.mTitle.setText(mItemsNews.get(position).getTitle());
+        viewHolder.mContent.setText(mItemsNews.get(position).getText());
         viewHolder.mImage.setImageResource(R.drawable.item_news_placeholder); //todo desharcodear esto
         if (true) viewHolder.mLike.setImageResource(R.drawable.likeon); //todo desharcodear esto
         else viewHolder.mLike.setImageResource(R.drawable.likeoff);
@@ -59,7 +62,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     // Return the size of your mItemsNews (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mItemsNews.length;
+        return mItemsNews.size();
     }
 
 }
