@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.wolox.woloxtrainingmolina.R;
@@ -48,10 +47,6 @@ public class NewsFragment extends Fragment {
     private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
 
     private User mUser;
-
-    private RowNews mItemNews[] = {};
-    //private News mNews[] = {};
-    private List<News> mNews = new ArrayList<News>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +86,7 @@ public class NewsFragment extends Fragment {
         mProgressBar = (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        mNewsRecyclerViewAdapter= new NewsRecyclerViewAdapter(mNews);
+        mNewsRecyclerViewAdapter= new NewsRecyclerViewAdapter();
         mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
         // todo customize animations extending RecyclerView.ItemAnimator class
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -110,7 +105,9 @@ public class NewsFragment extends Fragment {
         mProgressBar.setVisibility(View.GONE);
         mFab.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-        if (mNews != null && mNews.size() > 0) displayNoNews(false);
+        if (mNewsRecyclerViewAdapter != null
+            && mNewsRecyclerViewAdapter.getItemCount() > 0)
+                displayNoNews(false);
         else displayNoNews(true);
     }
 
@@ -157,7 +154,6 @@ public class NewsFragment extends Fragment {
 
     public void onEvent(MainActivity.LogInEvent event){
         this.mUser = event.mUser;
-        populateUi();
         doGetNews();
     }
 
@@ -184,11 +180,12 @@ public class NewsFragment extends Fragment {
 
         @Override
         public void success(NewsRequestAdapter newsRequestAdapter, Response response) {
-            mNews.clear();
-            addNewsIterator(newsRequestAdapter.getResults(), mNews);
-            //mNews = newsRequestAdapter.getResults();
+            //set mSwipeRefreshLayout visible BEFORE modifying
+            //the recycler adapter to get a smooth animation
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            mNewsRecyclerViewAdapter.addNewsArray(newsRequestAdapter.getResults());
+            mRecyclerView.smoothScrollToPosition(0);
             populateUi();
-            mNewsRecyclerViewAdapter.notifyDataSetChanged();
         }
 
         @Override
