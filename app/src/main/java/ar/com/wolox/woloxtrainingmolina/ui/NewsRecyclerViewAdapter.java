@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
@@ -19,6 +18,16 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     private ArrayList<News> mItemsNews = new ArrayList<News>();
 
     private NewsRowViewHolder mNewsRowViewHolder;
+
+    private OnViewHolderListener onViewHolderListener;
+
+    public interface OnViewHolderListener {
+        void onNextPageRequired();
+    }
+
+    public void setOnViewHolderListener(OnViewHolderListener onViewHolderListener) {
+        this.onViewHolderListener = onViewHolderListener;
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -53,6 +62,8 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
         if (true) viewHolder.mLike.setImageResource(R.drawable.likeon); //todo desharcodear esto
         else viewHolder.mLike.setImageResource(R.drawable.likeoff);
         viewHolder.mDate.setText("15m");//todo desharcodear esto
+
+        if (onViewHolderListener != null && position == getItemCount() - 1 - Config.NEWSFEED_FECTH_THRESHOLD) onViewHolderListener.onNextPageRequired();
     }
 
     // Return the size of your mItemsNews (invoked by the layout manager)
