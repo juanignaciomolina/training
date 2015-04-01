@@ -13,32 +13,48 @@ import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.entities.News;
 
-public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHolder> {
+public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<News> mItemsNews = new ArrayList<News>();
-
     private NewsRowViewHolder mNewsRowViewHolder;
-
-    private OnViewHolderListener onViewHolderListener;
+    private LoadingRowViewHolder mLoadingRowViewHolder;
+    private OnViewHolderListener mOnViewHolderListener;
+    private int mCurrentPos = 0;
+    private ArrayList<News> mLoadingNewsBackstack = new ArrayList<News>();
 
     public interface OnViewHolderListener {
         void onNextPageRequired();
     }
 
-    public void setOnViewHolderListener(OnViewHolderListener onViewHolderListener) {
-        this.onViewHolderListener = onViewHolderListener;
+    public void setOnViewHolderListener(OnViewHolderListener mOnViewHolderListener) {
+        this.mOnViewHolderListener = mOnViewHolderListener;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mItemsNews.get(position).isLoader()) return 1;
+        else return 0;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public NewsRowViewHolder onCreateViewHolder(
+    public RecyclerView.ViewHolder onCreateViewHolder(
             ViewGroup parent,
             int viewType) {
 
-        View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_news, null);
-        mNewsRowViewHolder = new NewsRowViewHolder(itemLayoutView, mViewHolderClickListener);
-        return mNewsRowViewHolder;
+        View itemLayoutView;
+
+        switch (viewType) {
+            default:
+            case 0:
+                itemLayoutView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_news, null);
+                return new NewsRowViewHolder(itemLayoutView, mViewHolderClickListener);
+            case 1:
+                itemLayoutView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_loading, null);
+                return new LoadingRowViewHolder(itemLayoutView);
+        }
     }
 
     NewsRowViewHolder.ViewHolderClicks mViewHolderClickListener = new NewsRowViewHolder.ViewHolderClicks() {
@@ -55,21 +71,35 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(NewsRowViewHolder viewHolder, int position) {
-        viewHolder.mTitle.setText(mItemsNews.get(position).getTitle());
-        viewHolder.mContent.setText(mItemsNews.get(position).getText());
-        viewHolder.mImage.setImageResource(R.drawable.item_news_placeholder); //todo desharcodear esto
-        if (true) viewHolder.mLike.setImageResource(R.drawable.likeon); //todo desharcodear esto
-        else viewHolder.mLike.setImageResource(R.drawable.likeoff);
-        viewHolder.mDate.setText("15m");//todo desharcodear esto
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-        if (onViewHolderListener != null && position == getItemCount() - 1 - Config.NEWSFEED_FECTH_THRESHOLD) onViewHolderListener.onNextPageRequired();
+        switch (getItemViewType(position)) {
+            default:
+            case 0:
+                mNewsRowViewHolder = (NewsRowViewHolder) viewHolder;
+                mNewsRowViewHolder.mTitle.setText(mItemsNews.get(position).getTitle());
+                mNewsRowViewHolder.mContent.setText(mItemsNews.get(position).getText());
+                mNewsRowViewHolder.mImage.setImageResource(R.drawable.item_news_placeholder); //todo desharcodear esto
+                if (true) mNewsRowViewHolder.mLike.setImageResource(R.drawable.likeon); //todo desharcodear esto
+                else mNewsRowViewHolder.mLike.setImageResource(R.drawable.likeoff);
+                mNewsRowViewHolder.mDate.setText("15m");//todo desharcodear esto
+
+                if (mOnViewHolderListener != null && position == getItemCount() - 1 - Config.NEWSFEED_FECTH_THRESHOLD) mOnViewHolderListener.onNextPageRequired();
+            case 1:
+                //Do something with the loading row if needed
+        }
+
+        mCurrentPos = position;
     }
 
     // Return the size of your mItemsNews (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mItemsNews.size();
+    }
+
+    public int getCurrentPos() {
+        return mCurrentPos;
     }
 
     //Dataset manipulators
@@ -94,12 +124,27 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     }
 
     public void removeNews(News newsToRemove) {
-        removeNewsByPos(getNewsPosition(newsToRemove));
+        int pos = getNewsPosition(newsToRemove);
+        if (pos >= 0) removeNewsByPos(pos);
     }
 
     private void moveNews(int fromPos, int toPos) {
         News temp = mItemsNews.remove(fromPos);
         mItemsNews.add(toPos, temp);
+    }
+
+    public void pushLoadingRow() {
+        News news = new News();
+        news.setLoader(true);
+        addNews(getItemCount(), news);
+        mLoadingNewsBackstack.add(news);
+    }
+
+    public void popLoadingRow() {
+        if (mLoadingNewsBackstack.size() > 0) {
+            removeNews(mLoadingNewsBackstack.get(mLoadingNewsBackstack.size() - 1));
+            mLoadingNewsBackstack.remove(mLoadingNewsBackstack.size() - 1);
+        }
     }
 
 }

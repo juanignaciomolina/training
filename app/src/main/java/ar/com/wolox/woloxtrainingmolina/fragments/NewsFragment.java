@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,12 @@ import android.widget.ProgressBar;
 
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.List;
-
 import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.activities.MainActivity;
 import ar.com.wolox.woloxtrainingmolina.api.NewsRequestAdapter;
 import ar.com.wolox.woloxtrainingmolina.api.NewsService;
-import ar.com.wolox.woloxtrainingmolina.entities.News;
-import ar.com.wolox.woloxtrainingmolina.entities.RowNews;
 import ar.com.wolox.woloxtrainingmolina.entities.User;
 import ar.com.wolox.woloxtrainingmolina.ui.NewsRecyclerViewAdapter;
 import ar.com.wolox.woloxtrainingmolina.utils.UiHelper;
@@ -52,6 +47,7 @@ public class NewsFragment extends Fragment {
 
     private User mUser;
     private int mActualPage = 0;
+    private boolean mNewsLoading = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,7 +135,22 @@ public class NewsFragment extends Fragment {
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    private void setLoadingRowFromBackground(final boolean state) {
+        //This is important: You can't notify the adapter from changes in the dataset
+        //from a non UI thread. So if we want to make changes in the dataset from a callback
+        //that runs on the background (on a different thread) we MUST implement a handler
+        android.os.Handler mHandler = mActivity.getWindow().getDecorView().getHandler();
+        mHandler.post(new Runnable() {
+            public void run(){
+                //change adapter contents
+                if (state) mNewsRecyclerViewAdapter.pushLoadingRow();
+                else mNewsRecyclerViewAdapter.popLoadingRow();
+            }
+        });
+    }
+
     private void doGetNews() {
+        mNewsLoading = true;
         mNewsService.getNews(
                 mActualPage * Config.NEWSFEED_PAGE_SIZE + 1,
                 Config.NEWSFEED_PAGE_SIZE,
@@ -147,27 +158,20 @@ public class NewsFragment extends Fragment {
         mActualPage ++;
     }
 
-    private void refreshItems() {
+    private void refreshNews() {
         // Load items
         // ...
 
         // Load complete
-        onItemsLoadComplete();
+        onRefreshNewsComplete();
     }
 
-    private void onItemsLoadComplete() {
+    private void onRefreshNewsComplete() {
         // Update the adapter and notify data set changed
         // ...
 
         // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    //
-    private void addNewsIterator(News[] from, List to) {
-        for( News news : from) {
-            to.add(news);
-        }
     }
 
     // ** EVENT BUS **
@@ -189,7 +193,10 @@ public class NewsFragment extends Fragment {
     NewsRecyclerViewAdapter.OnViewHolderListener mViewHolderListener = new NewsRecyclerViewAdapter.OnViewHolderListener() {
         @Override
         public void onNextPageRequired() {
-            doGetNews();
+            if (!mNewsLoading) {
+                setLoadingRowFromBackground(true);
+                doGetNews();
+            }
         }
     };
 
@@ -204,7 +211,7 @@ public class NewsFragment extends Fragment {
         @Override
         public void onRefresh() {
             // Refresh items
-            refreshItems();
+            refreshNews();
         }
     };
 
@@ -217,6 +224,12 @@ public class NewsFragment extends Fragment {
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             mNewsRecyclerViewAdapter.addNewsArray(newsRequestAdapter.getResults());
             populateUi();
+            if (newsRequestAdapter.getResults().length > 0
+                && mNewsRecyclerViewAdapter.getCurrentPos() == mNewsRecyclerViewAdapter.getItemCount() )
+                    mRecyclerView.smoothScrollToPosition(mNewsRecyclerViewAdapter.getCurrentPos() + 1);
+            if(mNewsLoading) mNewsRecyclerViewAdapter.popLoadingRow();
+            mNewsLoading = false;
+            setLoadingRowFromBackground(false);
         }
 
         @Override

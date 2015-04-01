@@ -13,6 +13,7 @@ public class News {
     private String userId;
     private String createdAt;
     private String updatedAt;
+    private boolean isLoader = false;
 
     public String getId() {
         return id;
@@ -76,5 +77,13 @@ public class News {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isLoader() {
+        return isLoader;
+    }
+
+    public void setLoader(boolean isLoader) {
+        this.isLoader = isLoader;
     }
 }
