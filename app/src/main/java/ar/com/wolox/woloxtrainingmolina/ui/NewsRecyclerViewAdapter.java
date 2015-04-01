@@ -16,13 +16,9 @@ import ar.com.wolox.woloxtrainingmolina.entities.News;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHolder> {
 
-    private List<News> mItemsNews = new ArrayList<News>();
+    private ArrayList<News> mItemsNews = new ArrayList<News>();
 
     private NewsRowViewHolder mNewsRowViewHolder;
-
-    public NewsRecyclerViewAdapter(List<News> itemsNews) {
-        this.mItemsNews = itemsNews;
-    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -63,6 +59,36 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRowViewHol
     @Override
     public int getItemCount() {
         return mItemsNews.size();
+    }
+
+    //Dataset manipulators
+    public void addNews(int position, News newsToInsert) {
+        mItemsNews.add(position, newsToInsert);
+        notifyItemInserted(position);
+    }
+
+    public void addNewsArray(News[] newsArray) {
+        for(News item : newsArray) {
+            addNews(getItemCount(), item);
+        }
+    }
+
+    public void removeNewsByPos(int position) {
+        mItemsNews.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public int getNewsPosition(News newsToLocate) {
+        return mItemsNews.indexOf(newsToLocate);
+    }
+
+    public void removeNews(News newsToRemove) {
+        removeNewsByPos(getNewsPosition(newsToRemove));
+    }
+
+    private void moveNews(int fromPos, int toPos) {
+        News temp = mItemsNews.remove(fromPos);
+        mItemsNews.add(toPos, temp);
     }
 
 }
