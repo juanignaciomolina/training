@@ -6,7 +6,7 @@ import retrofit.http.Query;
 
 public interface NewsService {
     @GET(Config.PARSE_NEWS)
-    void getNews(@Query("skip") int from,
-               @Query("limit") int to,
+    void getNews(@Query("skip") int fromPos,
+               @Query("limit") int NumbOfNews,
                retrofit.Callback<NewsRequestAdapter> newsRequestAdapterCallback);
 }

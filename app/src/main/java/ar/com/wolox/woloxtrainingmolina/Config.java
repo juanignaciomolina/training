@@ -31,4 +31,8 @@ public class Config {
     //UI
     public static final int UI_ELEVATION = 5;
 
+    //NEWSFEED
+    public static final int NEWSFEED_PAGE_SIZE = 8;
+    public static final int NEWSFEED_FECTH_THRESHOLD = 2;
+
 }

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
+import ar.com.wolox.woloxtrainingmolina.Config;
 import ar.com.wolox.woloxtrainingmolina.R;
 import ar.com.wolox.woloxtrainingmolina.TrainingApp;
 import ar.com.wolox.woloxtrainingmolina.activities.MainActivity;
@@ -46,8 +48,10 @@ public class NewsFragment extends Fragment {
     private ProgressBar mProgressBar;
 
     private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private User mUser;
+    private int mActualPage = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,8 +91,10 @@ public class NewsFragment extends Fragment {
         mNoInternetHolder = (LinearLayout) mActivity.findViewById(R.id.no_internet_holder);
         mProgressBar = (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mLinearLayoutManager = new LinearLayoutManager(mActivity.getApplicationContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mNewsRecyclerViewAdapter= new NewsRecyclerViewAdapter();
+        mNewsRecyclerViewAdapter.setOnViewHolderListener(mViewHolderListener);
         mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
         // todo customize animations extending RecyclerView.ItemAnimator class
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -134,7 +140,11 @@ public class NewsFragment extends Fragment {
     }
 
     private void doGetNews() {
-        mNewsService.getNews(0, 5, mGetNewsCallback);
+        mNewsService.getNews(
+                mActualPage * Config.NEWSFEED_PAGE_SIZE + 1,
+                Config.NEWSFEED_PAGE_SIZE,
+                mGetNewsCallback);
+        mActualPage ++;
     }
 
     private void refreshItems() {
@@ -176,6 +186,13 @@ public class NewsFragment extends Fragment {
 
     // ** ANONYMOUS CLASSES **
 
+    NewsRecyclerViewAdapter.OnViewHolderListener mViewHolderListener = new NewsRecyclerViewAdapter.OnViewHolderListener() {
+        @Override
+        public void onNextPageRequired() {
+            doGetNews();
+        }
+    };
+
     View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -199,7 +216,6 @@ public class NewsFragment extends Fragment {
             //the recycler adapter to get a smooth animation
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             mNewsRecyclerViewAdapter.addNewsArray(newsRequestAdapter.getResults());
-            mRecyclerView.smoothScrollToPosition(0);
             populateUi();
         }
 
